@@ -31,8 +31,8 @@ client.on('message', async (msg) => {
         embed.addField('Last joined', new Date(response.body.user['lastOnlineDate']).toUTCString(), true);
         embed.addField('Wins', response.body.user['wins'] ? response.body.user['wins'] : '0', true);
         embed.addField('Losses', response.body.user['losses'] ? response.body.user['losses'] : '0', true);
-        embed.addField('W/L', response.body.user['wins'] ? response.body.user['wins'] : '0' + '/' + response.body.user['losses'] ? response.body.user['losses'] : '0');
-        embed.addField('K/D', response.body.user['kills'] ? response.body.user['kills'] : 0 / response.body.user['deaths'] ? response.body.user['deaths'] : 0);
+        embed.addField('W/L', response.body.user['wins'] ? response.body.user['wins'] : '0' + '/' + response.body.user['losses'] ? response.body.user['losses'] : '0', true);
+        embed.addField('K/D', response.body.user['kills'] ? response.body.user['kills'] : 0 / response.body.user['deaths'] ? response.body.user['deaths'] : 0, true);
         msg.channel.send({ embed: embed });
     } else if (msg.content.toLowerCase().startsWith(config.discordPrefix + 'leaderboard')) {
         const response = await snek.get(config.apiURI + '/mc/leaderboard/kills');
