@@ -6,7 +6,7 @@ client.login(config.discordToken);
 
 client.on('ready', async () => {
     console.log(client.user.tag + ' is ready. Made by Jellz (https://jellz.fun/).');
-    client.user.setActivity(config.discordPrefix + 'help | made by Jellz#1337');
+    client.user.setActivity(config.discordPrefix + `help | ${client.users.size} users!`);
 });
 
 client.on('message', async (msg) => {
@@ -30,7 +30,6 @@ client.on('message', async (msg) => {
         embed.addField('Last joined', new Date(response.body.user['lastOnlineDate']).toUTCString(), true);
         embed.addField('Wins', response.body.user['wins'] ? response.body.user['wins'] : '0', true);
         embed.addField('Losses', response.body.user['losses'] ? response.body.user['losses'] : '0', true);
-        embed.setFooter('This bot was made by Jellz#1337 to assist Warzone community members with viewing players\' statistics.');
         msg.channel.send({ embed: embed });
     } else if (msg.content.toLowerCase().startsWith(config.discordPrefix + 'leaderboard')) {
         const response = await snek.get(config.apiURI + '/mc/leaderboard/kills');
@@ -47,7 +46,6 @@ client.on('message', async (msg) => {
         embed.setTitle(`Displaying Top 10 Warzone players based on Kills...`);
         embed.setColor('RED');
         embed.setURL('https://warz.one/leaderboard');
-        embed.setFooter('This bot was made by Jellz#1337 to assist Warzone community members with viewing players\' statistics.');
         embed.setDescription(lbMsg.join('\n'));
         msg.channel.send({ embed: embed });
     } else if (msg.content.toLowerCase().startsWith(config.discordPrefix + 'help')) {
@@ -56,8 +54,8 @@ client.on('message', async (msg) => {
         embed.setColor('RED');
         const helpMsg = [
             'This bot was made by Jellz#1337 to assist Warzone community members with viewing players\' statistics.',
-            `Commands: \`${config.discordPrefix}help\` \`${config.discordPrefix}player <playername>\` \`${config.discordPrefix}leaderboard\``,
-            'If you would like to view Jellz\'s other projects, head over to [his website](https://jellz.fun/).',
+            `Commands: \`${config.discordPrefix}help\` \`${config.discordPrefix}player <playername>\` \`${config.discordPrefix}leaderboard\``
+            // 'If you would like to view Jellz\'s other projects, head over to [his website](https://jellz.fun/).'
         ].join('\n');
         embed.setDescription(helpMsg);
         msg.channel.send({ embed: embed });
