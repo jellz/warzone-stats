@@ -6,12 +6,12 @@ client.login(config.discordToken);
 
 client.on('ready', async () => {
     console.log(client.user.tag + ' is ready. Made by Jellz (https://jellz.fun/).');
-    client.user.setActivity(config.discordPrefix + `help | ${client.users.size} users!`);
+    client.user.setActivity(config.discordPrefix + `help | ${client.guilds.first().memberCount} users!`);
 });
 
 client.on('message', async (msg) => {
     if (msg.author.bot || msg.author.id == client.user.id) return;
-    client.user.setActivity(config.discordPrefix + `help | ${client.users.size} users!`);
+    client.user.setActivity(config.discordPrefix + `help | ${client.guilds.first().memberCount} users!`);
     const args = msg.content.slice(0).trim(config.discordPrefix.length).split(/ +/g);
     args.shift();
     
