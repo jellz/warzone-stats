@@ -83,7 +83,7 @@ client.on('message', async (msg) => {
         embed.setDescription(punMsg.join('\n'));
         msg.channel.send({ embed: embed });
     } else if (msg.content.toLowerCase().startsWith(config.discordPrefix + 'server')) {
-        if (!args[0]) return msg.channel.send(`**Usage!** ${config.discordPrefix}server <"ingame"|"discord">`);
+        if (!args[0]) return msg.channel.send(`**Usage!** ${config.discordPrefix}server <"game"|"discord">`);
         if (args[0].toLowerCase() == 'discord') {
             const embed = new MessageEmbed();
             embed.setTitle('Discord server information');
@@ -98,6 +98,22 @@ client.on('message', async (msg) => {
                 `**Emojis** ${msg.guild.emojis.size}`,
                 `**Icon** ${msg.guild.avatarURL()}`
             ].join('\n');
+            embed.setDescription(infoDesc);
+            embed.setColor('RED');
+            msg.channel.send({ embed: embed });
+        } else if (args[0].toLowerCase() == 'game') {
+            const response = await snek.post(apiURI + '/mc/server/stats').send({ name: 'Warzone' });
+            const info = response.body;
+            const infoDesc = [
+                `**Name** ${info['name']}`,
+                `**MOTD** ${info['motd']}`,
+                `**Players (${info['playerCount']}/${info['maxPlayers']})** ${info['players'].join(', ')}`,
+                `**Spectators** ${info['spectatorCount']}`,
+                `**Map** ${info['map']}`,
+                `**Gamemode** ${info['gametype']}`
+            ].join('\n');
+            const embed = new MessageEmbed();
+            embed.setTitle('Minecraft server information');
             embed.setDescription(infoDesc);
             embed.setColor('RED');
             msg.channel.send({ embed: embed });
