@@ -85,6 +85,7 @@ client.on('message', async (msg) => {
     } else if (msg.content.toLowerCase().startsWith(config.discordPrefix + 'server')) {
         if (!args[0]) return msg.channel.send(`**Usage!** ${config.discordPrefix}server <"game"|"discord">`);
         if (args[0].toLowerCase() == 'discord') {
+            if (!msg.guild) return msg.author.send('You need to use this command in a Discord server.');
             const embed = new MessageEmbed();
             embed.setTitle('Discord server information');
             const infoDesc = [
@@ -102,7 +103,7 @@ client.on('message', async (msg) => {
             embed.setColor('RED');
             msg.channel.send({ embed: embed });
         } else if (args[0].toLowerCase() == 'game') {
-            const response = await snek.post(apiURI + '/mc/server/stats').send({ name: 'Warzone' });
+            const response = await snek.post(config.apiURI + '/mc/server/stats').send({ name: 'Warzone' });
             const info = response.body;
             const infoDesc = [
                 `**Name** ${info['name']}`,
