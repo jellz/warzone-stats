@@ -97,9 +97,9 @@ client.on('message', async (msg) => {
                 `**Owner** ${msg.guild.owner.user.tag}`,
                 `**Region** ${msg.guild.region}`,
                 `**Emojis** ${msg.guild.emojis.size}`,
-                `**Icon** ${msg.guild.iconURL()}`
             ].join('\n');
             embed.setDescription(infoDesc);
+            embed.setImage(msg.guild.iconURL())
             embed.setColor('RED');
             msg.channel.send({ embed: embed });
         } else if (args[0].toLowerCase() == 'game') {
