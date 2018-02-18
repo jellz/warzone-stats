@@ -70,7 +70,7 @@ client.on('message', async (msg) => {
         const punishments = response.body;
         const punMsg = [];
         punishments.forEach(punishment => {
-            time = punishment['issued'].toString().split(' ')[4];
+            time = new Date(punishment['issued']).toString().split(' ')[4];
             punishment['type'].toLowerCase() == 'warn' ? punType = 'warned' : punType;
             punishment['type'].toLowerCase() == 'mute' ? punType = 'muted' : punType;
             punishment['type'].toLowerCase() == 'ban' ? punType = 'banned' : punType;
