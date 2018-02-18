@@ -89,7 +89,7 @@ client.on('message', async (msg) => {
             const embed = new MessageEmbed();
             embed.setTitle('Discord server information');
             const infoDesc = [
-                `**Name** ${msg.guild.name}`
+                `**Name** ${msg.guild.name}`,
                 `**ID** ${msg.guild.id}`,
                 `**Verification level** ${msg.guild.verificationLevel}`,
                 `**Channels** ${msg.guild.channels.size}`,
