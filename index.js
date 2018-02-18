@@ -108,7 +108,7 @@ client.on('message', async (msg) => {
             const infoDesc = [
                 `**Name** ${info['name']}`,
                 `**MOTD** ${info['motd']}`,
-                `**Players (${info['playerCount']}/${info['maxPlayers']})** ${info['players'].length > 0 ? info['players'].join(', ') : 'Currently no players online. Get on using the IP **Warzone.minehut.gg**!'}`,
+                `**Players (${info['playerCount']}/${info['maxPlayers']})** ${info['players'].length > 0 ? info['players'].join(', ') : 'Currently no players online.'}`,
                 `**Spectators** ${info['spectatorCount']}`,
                 `**Map** ${info['map']}`,
                 `**Gamemode** ${info['gametype']}`
