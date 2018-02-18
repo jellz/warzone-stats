@@ -57,7 +57,7 @@ client.on('message', async (msg) => {
         embed.setColor('RED');
         const helpMsg = [
             'This bot was made by [Jellz#1337](https://jellz.fun/) to assist Warzone community members with viewing players\' statistics.',
-            `Commands: \`${config.discordPrefix}help\` \`${config.discordPrefix}player <playername>\` \`${config.discordPrefix}leaderboard\``,
+            `Commands: \`${config.discordPrefix}help\` \`${config.discordPrefix}player <playername>\` \`${config.discordPrefix}leaderboard\` \`${config.discordPrefix}punishments\``,
             'This bot is open-sourced on [Github.](https://github.com/jellz/warzonestats)'
             // 'If you would like to view Jellz\'s other projects, head over to [his website](https://jellz.fun/).'
         ].join('\n');
