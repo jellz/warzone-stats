@@ -97,7 +97,7 @@ client.on('message', async (msg) => {
                 `**Owner** ${msg.guild.owner.user.tag}`,
                 `**Region** ${msg.guild.region}`,
                 `**Emojis** ${msg.guild.emojis.size}`,
-                `**Icon** ${msg.guild.avatarURL}`
+                `**Icon** ${msg.guild.iconURL()}`
             ].join('\n');
             embed.setDescription(infoDesc);
             embed.setColor('RED');
