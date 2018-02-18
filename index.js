@@ -100,7 +100,7 @@ client.on('message', async (msg) => {
             ].join('\n');
             embed.setDescription(infoDesc);
             // embed.setImage(msg.guild.iconURL());
-            embed.setThumbnail(msg.guild.avatarURL());
+            embed.setThumbnail(msg.guild.iconURL());
             embed.setColor('RED');
             msg.channel.send({ embed: embed });
         } else if (args[0].toLowerCase() == 'game') {
