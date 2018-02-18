@@ -106,6 +106,7 @@ client.on('message', async (msg) => {
             const response = await snek.post(config.apiURI + '/mc/server/stats').send({ name: 'Warzone' });
             const info = response.body;
             const infoDesc = [
+                '**IP** Warzone.minehut.gg'
                 `**Name** ${info['name']}`,
                 `**MOTD** ${info['motd']}`,
                 `**Players (${info['playerCount']}/${info['maxPlayers']})** ${info['players'].length > 0 ? info['players'].join(', ') : 'Currently no players online.'}`,
