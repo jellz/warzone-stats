@@ -82,6 +82,26 @@ client.on('message', async (msg) => {
         embed.setColor('RED');
         embed.setDescription(punMsg.join('\n'));
         msg.channel.send({ embed: embed });
+    } else if (msg.content.toLowerCase().startsWith(config.discordPrefix + 'server')) {
+        if (!args[0]) return msg.channel.send(`**Usage!** ${config.discordPrefix}server <"ingame"|"discord">`);
+        if (args[0].toLowerCase() == 'discord') {
+            const embed = new MessageEmbed();
+            embed.setTitle('Discord server information');
+            const infoDesc = [
+                `**Name** ${msg.guild.name}`
+                `**ID** ${msg.guild.id}`,
+                `**Verification level** ${msg.guild.verificationLevel}`,
+                `**Channels** ${msg.guild.channels.size}`,
+                `**Roles** ${msg.guild.roles.size}`,
+                `**Owner** ${msg.guild.owner.user.tag}`,
+                `**Region** ${msg.guild.region}`,
+                `**Emojis** ${msg.guild.emojis.size}`,
+                `**Icon** ${msg.guild.avatarURL()}`
+            ].join('\n');
+            embed.setDescription(infoDesc);
+            embed.setColor('RED');
+            msg.channel.send({ embed: embed });
+        }
     }
 });
 
