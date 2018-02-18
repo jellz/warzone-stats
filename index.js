@@ -24,6 +24,7 @@ client.on('message', async (msg) => {
         embed.setColor('RED');
         embed.setURL('https://warz.one/' + args[0]);
         embed.setDescription(`Displaying **${args[0]}**'s Warzone statistics.`);
+        embed.setThumbnail('https://crafatar.com/avatars/' + response.body.user['uuid']);
         embed.addField('Kills', response.body.user['kills'] ? response.body.user['kills'] : '0', true);
         embed.addField('Deaths', response.body.user['deaths'] ? response.body.user['deaths'] : '0', true);
         embed.addField('Matches played', response.body.user['matches'] ? response.body.user['matches'].length : '0', true);
