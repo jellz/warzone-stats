@@ -56,14 +56,27 @@ client.on('message', async (msg) => {
         embed.setTitle('Displaying bot help');
         embed.setColor('RED');
         const helpMsg = [
-            'This bot was made by Jellz#1337 to assist Warzone community members with viewing players\' statistics.',
-            `Commands: \`${config.discordPrefix}help\` \`${config.discordPrefix}player <playername>\` \`${config.discordPrefix}leaderboard\``
+            'This bot was made by [Jellz#1337](https://jellz.fun/) to assist Warzone community members with viewing players\' statistics.',
+            `Commands: \`${config.discordPrefix}help\` \`${config.discordPrefix}player <playername>\` \`${config.discordPrefix}leaderboard\``,
+            'This bot is open-sourced on [Github.](https://github.com/jellz/warzonestats)'
             // 'If you would like to view Jellz\'s other projects, head over to [his website](https://jellz.fun/).'
         ].join('\n');
         embed.setDescription(helpMsg);
         msg.channel.send({ embed: embed });
     } else if (msg.content.toLowerCase().startsWith(config.discordPrefix + 'ping')) {
         msg.channel.send('Pong!');
+    } else if (msg.content.toLowerCase().startsWith(config.discordPrefix + 'punishments')) {
+        const response = await snek.get(config.apiURI + '/mc/punishment/latest?limit=10');
+        const punishments = response.body;
+        const punMsg = [];
+        punishments.forEach(punishment => {
+            punMsg.push(`🔹 **${punishment['punisherLoaded'].name}** ${punishment['type'].toLowerCase()}ed **${punishment['punishedLoaded']}** for **${punishment['reason']}**`);
+        });
+        const embed = new MessageEmbed();
+        embed.setTitle(`Displaying last 10 punishments on Warzone...`);
+        embed.setColor('RED');
+        embed.setDescription(punMsg.join('\n'));
+        msg.channel.send({ embed: embed });
     }
 });
 
