@@ -70,11 +70,12 @@ client.on('message', async (msg) => {
         const punishments = response.body;
         const punMsg = [];
         punishments.forEach(punishment => {
+            time = punishment['issued'].toString().split(' ')[4];
             punishment['type'].toLowerCase() == 'warn' ? punType = 'warned' : punType;
             punishment['type'].toLowerCase() == 'mute' ? punType = 'muted' : punType;
             punishment['type'].toLowerCase() == 'ban' ? punType = 'banned' : punType;
             punishment['type'].toLowerCase() == 'kick' ? punType = 'kicked' : punType;
-            punMsg.push(`🔹 **${punishment['punisherLoaded'].name}** ${punType} **${punishment['punishedLoaded'].name}** for **${punishment['reason']}**`);
+            punMsg.push(`🔹 \`${time}\` **${punishment['punisherLoaded'].name}** ${punType} **${punishment['punishedLoaded'].name}** for **${punishment['reason']}**`);
         });
         const embed = new MessageEmbed();
         embed.setTitle(`Displaying last 10 punishments on Warzone...`);
