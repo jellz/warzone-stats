@@ -91,6 +91,7 @@ client.on('message', async (msg) => {
             const infoDesc = [
                 `**Name** ${msg.guild.name}`,
                 `**ID** ${msg.guild.id}`,
+                `**Members** ${msg.guild.memberCount}`
                 `**Verification level** ${msg.guild.verificationLevel}`,
                 `**Channels** ${msg.guild.channels.size}`,
                 `**Roles** ${msg.guild.roles.size}`,
