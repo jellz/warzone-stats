@@ -83,6 +83,8 @@ client.on('message', async (msg) => {
         embed.setColor('RED');
         embed.setDescription(punMsg.join('\n'));
         msg.channel.send({ embed: embed });
+    } else if (msg.content.toLowerCase().startsWith(config.discordPrefix + 'roles')) {
+        msg.channel.send(msg.guild.roles.map(r => `**${r.name}** (${r.id})`).join(', '));
     } else if (msg.content.toLowerCase().startsWith(config.discordPrefix + 'server')) {
         if (!args[0]) return msg.channel.send(`**Usage!** ${config.discordPrefix}server <"game"|"discord">`);
         if (args[0].toLowerCase() == 'discord') {
@@ -122,8 +124,6 @@ client.on('message', async (msg) => {
             embed.setDescription(infoDesc);
             embed.setColor('RED');
             msg.channel.send({ embed: embed });
-        } else if (msg.content.toLowerCase().startsWith(config.discordPrefix + 'roles')) {
-            msg.channel.send(msg.guild.roles.map(r => `**${r.name}** (${r.id})`).join(', '));
         }
     }
 });
