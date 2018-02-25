@@ -122,7 +122,7 @@ client.on('message', async (msg) => {
             embed.setDescription(infoDesc);
             embed.setColor('RED');
             msg.channel.send({ embed: embed });
-        } else if (args[0].toLowerCase() == 'roles') {
+        } else if (msg.content.toLowerCase().startsWith(config.discordPrefix + 'roles')) {
             msg.channel.send(msg.guild.roles.map(r => `**${r.name}** (${r.id})`).join(', '));
         }
     }
