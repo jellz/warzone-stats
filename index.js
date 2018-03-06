@@ -77,7 +77,8 @@ client.on('message', async (msg) => {
                 punishment['type'].toLowerCase() == 'mute' ? punType = 'muted' : punType;
                 punishment['type'].toLowerCase() == 'ban' ? punType = 'banned' : punType;
                 punishment['type'].toLowerCase() == 'kick' ? punType = 'kicked' : punType;
-                punMsg.push(`🔹 \`${time}\` **${punishment['punisherLoaded'].name}** ${punType} **${punishment['punishedLoaded'].name}** for **${punishment['reason']}**`);
+                if (!punType) msg.channel.send('**DEBUG**: apparently the punishment type returned by the api is ' + punishment['type']);
+                // punMsg.push(`🔹 \`${time}\` **${punishment['punisherLoaded'].name}** ${punType} **${punishment['punishedLoaded'].name}** for **${punishment['reason']}**`);
             });
             const embed = new MessageEmbed();
             embed.setTitle(`Displaying last 10 punishments on Warzone...`);
