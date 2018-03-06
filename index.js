@@ -67,22 +67,26 @@ client.on('message', async (msg) => {
     } else if (msg.content.toLowerCase().startsWith(config.discordPrefix + 'ping')) {
         msg.channel.send('Pong!');
     } else if (msg.content.toLowerCase().startsWith(config.discordPrefix + 'punishments')) {
-        const response = await snek.get(config.apiURI + '/mc/punishment/latest?limit=10');
-        const punishments = response.body;
-        const punMsg = [];
-        punishments.forEach(punishment => {
-            time = new Date(punishment['issued']).toString().split(' ')[4];
-            punishment['type'].toLowerCase() == 'warn' ? punType = 'warned' : punType;
-            punishment['type'].toLowerCase() == 'mute' ? punType = 'muted' : punType;
-            punishment['type'].toLowerCase() == 'ban' ? punType = 'banned' : punType;
-            punishment['type'].toLowerCase() == 'kick' ? punType = 'kicked' : punType;
-            punMsg.push(`🔹 \`${time}\` **${punishment['punisherLoaded'].name}** ${punType} **${punishment['punishedLoaded'].name}** for **${punishment['reason']}**`);
-        });
-        const embed = new MessageEmbed();
-        embed.setTitle(`Displaying last 10 punishments on Warzone...`);
-        embed.setColor('RED');
-        embed.setDescription(punMsg.join('\n'));
-        msg.channel.send({ embed: embed });
+        try {
+            const response = await snek.get(config.apiURI + '/mc/punishment/latest?limit=10');
+            const punishments = response.body;
+            const punMsg = [];
+            punishments.forEach(punishment => {
+                time = new Date(punishment['issued']).toString().split(' ')[4];
+                punishment['type'].toLowerCase() == 'warn' ? punType = 'warned' : punType;
+                punishment['type'].toLowerCase() == 'mute' ? punType = 'muted' : punType;
+                punishment['type'].toLowerCase() == 'ban' ? punType = 'banned' : punType;
+                punishment['type'].toLowerCase() == 'kick' ? punType = 'kicked' : punType;
+                punMsg.push(`🔹 \`${time}\` **${punishment['punisherLoaded'].name}** ${punType} **${punishment['punishedLoaded'].name}** for **${punishment['reason']}**`);
+            });
+            const embed = new MessageEmbed();
+            embed.setTitle(`Displaying last 10 punishments on Warzone...`);
+            embed.setColor('RED');
+            embed.setDescription(punMsg.join('\n'));
+            msg.channel.send({ embed: embed });
+        } catch(err) {
+            msg.channel.send('An error occurred. Please contact **daniel#0004** as you shouldn\'t be seeing this message.\n\n\n```js\n' + err + '```');
+        }
     // Benny was mad that the Discord API could view all roles... :bloblul:
     // } else if (msg.content.toLowerCase().startsWith(config.discordPrefix + 'roles')) {
     //     msg.channel.send(msg.guild.roles.map(r => `**${r.name}** (${r.id})`).join(', '));
