@@ -73,6 +73,7 @@ client.on('message', async (msg) => {
             const punMsg = [];
             var punType;
             punishments.forEach(punishment => {
+                if (!punishment['punisherLoaded'].name) punishment['punisherLoaded'].name = 'Console';
                 time = new Date(punishment['issued']).toString().split(' ')[4];
                 punishment['type'].toLowerCase() == 'warn' ? punType = 'warned' : punType;
                 punishment['type'].toLowerCase() == 'mute' ? punType = 'muted' : punType;
