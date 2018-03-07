@@ -9,7 +9,7 @@ client.on('ready', async () => {
     client.user.setActivity(config.discordPrefix + `help`);
 });
 
-client.on('message', async (msg) => {
+client.on('message', async(msg) => {
     if (msg.author.bot || msg.author.id == client.user.id) return;
     client.user.setActivity(config.discordPrefix + `help`);
     const args = msg.content.slice(0).trim(config.discordPrefix.length).split(/ +/g);
@@ -18,20 +18,20 @@ client.on('message', async (msg) => {
     if (msg.content.toLowerCase().startsWith(config.discordPrefix + 'player')) {
         if (!args[0]) return msg.channel.send(`**Usage!** ${config.discordPrefix}player <playername>`);
         const response = await snek.get(config.apiURI + '/mc/player/' + args[0].toLowerCase());
-        if (response.body['notFound']) return msg.channel.send('Invalid player.');
+        if (response.body.body) return msg.channel.send('Invalid player.');
         const embed = new MessageEmbed();
         embed.setTitle(`${args[0]}'s Warzone statistics`);
         embed.setColor('RED');
         embed.setURL('https://warz.one/' + args[0]);
         embed.setDescription(`Displaying **${args[0]}**'s Warzone statistics.`);
-        embed.setThumbnail('https://crafatar.com/avatars/' + response.body.user['uuid']);
-        embed.addField('Kills', response.body.user['kills'] ? response.body.user['kills'] : '0', true);
-        embed.addField('Deaths', response.body.user['deaths'] ? response.body.user['deaths'] : '0', true);
-        embed.addField('Matches played', response.body.user['matches'] ? response.body.user['matches'].length : '0', true);
-        embed.addField('First joined', new Date(response.body.user['initialJoinDate']).toUTCString(), true);
-        embed.addField('Last joined', new Date(response.body.user['lastOnlineDate']).toUTCString(), true);
-        embed.addField('Wins', response.body.user['wins'] ? response.body.user['wins'] : '0', true);
-        embed.addField('Losses', response.body.user['losses'] ? response.body.user['losses'] : '0', true);
+        embed.setThumbnail('https://crafatar.com/avatars/' + response.body.user.uuid);
+        embed.addField('Kills', response.body.user.kills ? response.body.user.kills : '0', true);
+        embed.addField('Deaths', response.body.user.deaths ? response.body.user.deaths : '0', true);
+        embed.addField('Matches played', response.body.user.matches ? response.body.user.matches.length : '0', true);
+        embed.addField('First joined', new Date(response.body.user.initialJoinDate).toUTCString(), true);
+        embed.addField('Last joined', new Date(response.body.user.lastOnlineDate).toUTCString(), true);
+        embed.addField('Wins', response.body.user.wins ? response.body.user.wins : '0', true);
+        embed.addField('Losses', response.body.user.losses ? response.body.user.losses : '0', true);
         // embed.addField('W/L', response.body.user['wins'] ? response.body.user['wins'] : '0' + '/' + response.body.user['losses'] ? response.body.user['losses'] : '0', true);
         // embed.addField('K/D', response.body.user['kills'] ? response.body.user['kills'] : 0 / response.body.user['deaths'] ? response.body.user['deaths'] : 0, true);
         msg.channel.send({ embed: embed });
@@ -74,11 +74,17 @@ client.on('message', async (msg) => {
             var punType;
             punishments.forEach(punishment => {
                 time = new Date(punishment['issued']).toString().split(' ')[4];
-                punishment['type'].toLowerCase() == 'warn' ? punType = 'warned' : punType;
-                punishment['type'].toLowerCase() == 'mute' ? punType = 'muted' : punType;
-                punishment['type'].toLowerCase() == 'ban' ? punType = 'banned' : punType;
-                punishment['type'].toLowerCase() == 'kick' ? punType = 'kicked' : punType;
-                punMsg.push(`🔹 \`${time}\` **${punishment['punisherLoaded'].name}** ${punType} **${punishment['punishedLoaded'].name}** for **${punishment['reason']}**`);
+                punisher = punishment.punisherLoaded.name == null ? 'Console' : punishment.punisherLoaded.name;
+                punishment.type.toLowerCase() == 'warn' ? punType = 'warned' : punType;
+                punishment.type.toLowerCase() == 'mute' ? punType = 'muted' : punType;
+                punishment.type.toLowerCase() == 'ban' ? punType = 'banned' : punType;
+                punishment.type.toLowerCase() == 'kick' ? punType = 'kicked' : punType;
+                if (punishment.type.toLowerCase() == 'ban' || punishment.type.toLowerCase() == 'mute') {
+                    var expires = punishment.expires == -1 ? "Never" : new Date(punishment.expires);
+                    punMsg.push(`🔹 \`${time}\` **${punisher}** ${punType} **${punishment.punishedLoaded.name}** for **${punishment.reason}**. Expires: ${expires}`);
+                } else {
+                    punMsg.push(`🔹 \`${time}\` **${punisher}** ${punType} **${punishment.punishedLoaded.name}** for **${punishment.reason}**.`);
+                }
             });
             const embed = new MessageEmbed();
             embed.setTitle(`Displaying last 10 punishments on Warzone...`);
@@ -118,12 +124,12 @@ client.on('message', async (msg) => {
             const info = response.body;
             const infoDesc = [
                 '**IP** Warzone.minehut.gg',
-                `**Name** ${info['name']}`,
-                `**MOTD** ${info['motd']}`,
-                `**Players (${info['playerCount']}/${info['maxPlayers']})** ${info['players'].length > 0 ? info['players'].join(', ') : 'Currently no players online.'}`,
-                `**Spectators** ${info['spectatorCount']}`,
-                `**Map** ${info['map']}`,
-                `**Gamemode** ${info['gametype']}`
+                `**Name** ${info.name}`,
+                `**MOTD** ${info.motd}`,
+                `**Players (${info.playerCount}/${info.maxPlayers})** ${info.players.length > 0 ? info.players.join(', ') : 'Currently no players online.'}`,
+                `**Spectators** ${info.spectatorCount}`,
+                `**Map** ${info.map}`,
+                `**Gamemode** ${info.gametype}`
             ].join('\n');
             const embed = new MessageEmbed();
             embed.setTitle('Minecraft server information');
