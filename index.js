@@ -137,7 +137,7 @@ client.on('message', async (msg) => {
   }
 });
 
-const getNumberEmoji = async (place) => {
+const getNumberEmoji = (place) => {
   switch (place) {
     case 1:
       return ':one:';
@@ -158,7 +158,7 @@ const getNumberEmoji = async (place) => {
     case 9:
       return ':nine:';
     case 10:
-      return ':ten:';
+      return ':one::zero:';
     default:
       return ':question:';
   }
