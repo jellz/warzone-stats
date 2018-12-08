@@ -74,7 +74,7 @@ client.on('message', async (msg) => {
       '[Open-source on Github](https://github.com/danielgulic/warzone-stats)',
       '[PvP with friends](https://discord.gg/PtjsaW9)',
       '[Creator\'s website](https://danielgulic.com)',
-      `[Invite the bot](https://discordapp.com/oauth2/authorize?client_id=${client.user.id}&scope=bot&permissions=19520)`
+      `[Invite the bot](https://discordapp.com/oauth2/authorize?client_id=${client.user.id}&scope=bot&permissions=281664)`
     ]);
     msg.channel.send({ embed });
   } else if (msg.content.toLowerCase().startsWith(config.discordPrefix + 'ping')) {
