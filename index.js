@@ -25,9 +25,8 @@ client.on('message', async (msg) => {
       const body = await response.json();
       if (body['notFound']) return msg.channel.send('Invalid player.');
       const embed = new MessageEmbed();
-      embed.setTitle(`${args[0]}'s Warzone statistics`);
+      embed.setTitle(`${args[0]}'s statistics`);
       embed.setColor('RED');
-      embed.setURL('https://warz.one/' + args[0]);
       embed.setDescription(`Displaying **${args[0]}**'s Warzone statistics.`);
       embed.setThumbnail('https://crafatar.com/avatars/' + body.user.uuid);
       embed.addField('Kills', body.user.kills ? body.user.kills : '0', true);
@@ -54,9 +53,8 @@ client.on('message', async (msg) => {
       }
     });
     const embed = new MessageEmbed();
-    embed.setTitle(`Displaying Top 10 Warzone players based on Kills...`);
+    embed.setTitle(`Top 10 players on Warzone (sorted by kills)`);
     embed.setColor('RED');
-    embed.setURL('https://warz.one/leaderboard');
     embed.setDescription(lbMsg.join('\n'));
     msg.channel.send({ embed });
   } else if (msg.content.toLowerCase().startsWith(config.discordPrefix + 'help')) {
