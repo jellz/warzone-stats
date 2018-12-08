@@ -29,18 +29,18 @@ client.on('message', async (msg) => {
       embed.setColor('RED');
       embed.setURL('https://warz.one/' + args[0]);
       embed.setDescription(`Displaying **${args[0]}**'s Warzone statistics.`);
-      embed.setThumbnail('https://crafatar.com/avatars/' + body.user['uuid']);
-      embed.addField('Kills', body.user['kills'] ? body.user['kills'] : '0', true);
-      embed.addField('Deaths', body.user['deaths'] ? body.user['deaths'] : '0', true);
-      embed.addField('Matches played', body.user['matches'] ? body.user['matches'].length : '0', true);
-      embed.addField('First joined', new Date(body.user['initialJoinDate']).toUTCString(), true);
-      embed.addField('Last joined', new Date(body.user['lastOnlineDate']).toUTCString(), true);
-      embed.addField('Wins', body.user['wins'] ? body.user['wins'] : '0', true);
-      embed.addField('Losses', body.user['losses'] ? body.user['losses'] : '0', true);
+      embed.setThumbnail('https://crafatar.com/avatars/' + body.user.uuid);
+      embed.addField('Kills', body.user.kills ? body.user.kills : '0', true);
+      embed.addField('Deaths', body.user.deaths ? body.user.deaths : '0', true);
+      embed.addField('Matches played', body.user.matches ? body.user.matches.length : '0', true);
+      embed.addField('First joined', new Date(body.user.initialJoinDate).toUTCString(), true);
+      embed.addField('Last joined', new Date(body.user.lastOnlineDate).toUTCString(), true);
+      embed.addField('Wins', body.user.wins ? body.user.wins : '0', true);
+      embed.addField('Losses', body.user.losses ? body.user.losses : '0', true);
       embed.addField('Level', body.user.level, true);
       embed.addField('Ranks', (await getPlayerRanksFromIds(body.user.ranks)).map(rank => `\`${rank.name.toUpperCase()}\``).join('\n'), true);
-      // embed.addField('W/L', body.user['wins'] ? body.user['wins'] : '0' + '/' + body.user['losses'] ? body.user['losses'] : '0', true);
-      // embed.addField('K/D', body.user['kills'] ? body.user['kills'] : 0 / body.user['deaths'] ? body.user['deaths'] : 0, true);
+      // embed.addField('W/L', body.user.wins ? body.user.wins : '0' + '/' + body.user.losses ? body.user.losses : '0', true);
+      // embed.addField('K/D', body.user.kills ? body.user.kills : 0 / body.user.deaths ? body.user.deaths : 0, true);
       msg.channel.send({ embed });
   } else if (msg.content.toLowerCase().startsWith(config.discordPrefix + 'leaderboard') || msg.content.toLowerCase().startsWith(config.discordPrefix + 'lb')) {
     const response = await fetch(config.apiUri + '/mc/leaderboard/kills');
@@ -88,13 +88,13 @@ client.on('message', async (msg) => {
       const punMsg = [];
       var punType;
       punishments.forEach(punishment => {
-        if (!punishment['punisherLoaded']) punishment['punisherLoaded'] = { name: 'Console' };
-        time = new Date(punishment['issued']).toString().split(' ')[4];
-        punishment['type'].toLowerCase() == 'warn' ? punType = 'warned' : punType;
-        punishment['type'].toLowerCase() == 'mute' ? punType = 'muted' : punType;
-        punishment['type'].toLowerCase() == 'ban' ? punType = 'banned' : punType;
-        punishment['type'].toLowerCase() == 'kick' ? punType = 'kicked' : punType;
-        punMsg.push(`🔹 \`${time}\` **${punishment['punisherLoaded'].name}** ${punType} **${punishment['punishedLoaded'].name}** for **${punishment['reason']}**`);
+        if (!punishment.punisherLoaded) punishment.punisherLoaded = { name: 'Console' };
+        time = new Date(punishment.issued).toString().split(' ')[4];
+        punishment.type.toLowerCase() == 'warn' ? punType = 'warned' : punType;
+        punishment.type.toLowerCase() == 'mute' ? punType = 'muted' : punType;
+        punishment.type.toLowerCase() == 'ban' ? punType = 'banned' : punType;
+        punishment.type.toLowerCase() == 'kick' ? punType = 'kicked' : punType;
+        punMsg.push(`🔹 \`${time}\` **${punishment.punisherLoaded.name}** ${punType} **${punishment.punishedLoaded.name}** for **${punishment.reason}**`);
       });
       const embed = new MessageEmbed();
       embed.setTitle(`Displaying last 10 punishments on Warzone...`);
@@ -102,7 +102,7 @@ client.on('message', async (msg) => {
       embed.setDescription(punMsg.join('\n'));
       msg.channel.send({ embed });
     } catch(err) {
-      msg.channel.send('An error occurred. Please contact **daniel#0004** as you shouldn\'t be seeing this message.\n\n\n```js\n' + err + '```');
+      msg.channel.send('An error occurred.\n\n\n```js\n' + err + '```');
     }
   } else if (msg.content.toLowerCase().startsWith(config.discordPrefix + 'server')) {
     if (!args[0]) return msg.channel.send(`**Usage!** ${config.discordPrefix}server (game|discord)`);
