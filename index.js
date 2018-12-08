@@ -76,6 +76,7 @@ client.on('message', async (msg) => {
       '[Creator\'s website](https://danielgulic.com)',
       `[Invite the bot](https://discordapp.com/oauth2/authorize?client_id=${client.user.id}&scope=bot&permissions=281664)`
     ], true);
+    embed.setFooter('Copyright 2018 © Daniel Gulic (jellz)');
     msg.channel.send({ embed });
   } else if (msg.content.toLowerCase().startsWith(config.discordPrefix + 'ping')) {
     msg.channel.send('Pong!');
