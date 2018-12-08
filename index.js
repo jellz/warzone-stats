@@ -5,8 +5,8 @@ const config = require('./config.json');
 client.login(config.discordToken);
 
 client.on('ready', async () => {
-    console.log(client.user.tag + ' is ready. Made by Jellz (https://jellz.fun/).');
-    client.user.setActivity(config.discordPrefix + `help`);
+    console.log(`${client.user.tag} is ready!\nThis bot was written by Daniel Gulic for Warzone.`);
+    client.user.setActivity(`with about ${client.users.size} users (${config.discordPrefix}help)`);
 });
 
 client.on('message', async (msg) => {
