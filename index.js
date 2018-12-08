@@ -10,7 +10,7 @@ const config = require('./config.json');
 client.login(config.discordToken);
 
 client.on('ready', async () => {
-  console.log(`${client.user.tag} is ready!\n© This bot was written by Daniel Gulic for Warzone.`);
+  console.log(`${client.user.tag} is ready!`);
   client.user.setActivity(`with about ${client.users.size} users (${config.discordPrefix}help)`);
 });
 
@@ -61,7 +61,7 @@ client.on('message', async (msg) => {
     const embed = new MessageEmbed();
     embed.setTitle('Displaying bot help');
     embed.setColor('RED');
-    embed.setDescription('**View Warzone player stats, punishments, leaderboards and server info with Warzone Stats!**');
+    embed.setDescription('View Warzone player stats, punishments, leaderboards and server info with Warzone Stats!');
     embed.addField('Commands', [
       `\`${config.discordPrefix}help\``,
       `\`${config.discordPrefix}player <playername>\``,
@@ -75,7 +75,7 @@ client.on('message', async (msg) => {
       '[PvP with friends](https://discord.gg/PtjsaW9)',
       '[Creator\'s website](https://danielgulic.com)',
       `[Invite the bot](https://discordapp.com/oauth2/authorize?client_id=${client.user.id}&scope=bot&permissions=281664)`
-    ]);
+    ], true);
     msg.channel.send({ embed });
   } else if (msg.content.toLowerCase().startsWith(config.discordPrefix + 'ping')) {
     msg.channel.send('Pong!');
