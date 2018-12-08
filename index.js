@@ -59,7 +59,6 @@ client.on('message', async (msg) => {
     msg.channel.send({ embed });
   } else if (msg.content.toLowerCase().startsWith(config.discordPrefix + 'help')) {
     const embed = new MessageEmbed();
-    embed.setTitle('Displaying bot help');
     embed.setColor('RED');
     embed.setDescription('View Warzone player stats, punishments, leaderboards and server info with Warzone Stats!');
     embed.addField('Commands', [
@@ -95,7 +94,7 @@ client.on('message', async (msg) => {
         punMsg.push(`🔹 \`${time}\` **${punishment.punisherLoaded.name}** ${punType} **${punishment.punishedLoaded.name}** for **${punishment.reason}**`);
       });
       const embed = new MessageEmbed();
-      embed.setTitle(`Displaying last 10 punishments on Warzone...`);
+      embed.setTitle(`10 most recent punishments on Warzone`);
       embed.setColor('RED');
       embed.setDescription(punMsg.join('\n'));
       msg.channel.send({ embed });
