@@ -1,16 +1,15 @@
 {
-  "name": "warzonestats",
+  "name": "warzone-stats",
   "version": "1.0.0",
-  "description": "Discord bot for displaying stats from Minecraft pvp server Warzone",
+  "description": "Discord bot for displaying stats from Minecraft PvP server Warzone",
   "main": "index.js",
   "scripts": {
     "test": "echo \"Error: no test specified\" && exit 1"
   },
   "keywords": [],
-  "author": "Jellz",
+  "author": "Daniel Gulic <danielgulic@gmail.com>",
   "license": "ISC",
   "dependencies": {
-    "discord.js": "github:hydrabolt/discord.js",
-    "snekfetch": "^3.6.4"
+    "discord.js": "discordjs/discord.js"
   }
 }
