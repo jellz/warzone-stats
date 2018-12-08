@@ -1,5 +1,5 @@
 const { Client, MessageEmbed } = require('discord.js');
-const snek = require('snekfetch');
+const fetch = require('node-fetch');
 const client = new Client({ disableEveryone: true });
 const config = require('./config.json');
 client.login(config.discordToken);
