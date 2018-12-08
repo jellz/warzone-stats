@@ -37,6 +37,7 @@ client.on('message', async (msg) => {
       embed.addField('Last joined', new Date(body.user['lastOnlineDate']).toUTCString(), true);
       embed.addField('Wins', body.user['wins'] ? body.user['wins'] : '0', true);
       embed.addField('Losses', body.user['losses'] ? body.user['losses'] : '0', true);
+      embed.addField('Level', body.user.level, true);
       // embed.addField('W/L', body.user['wins'] ? body.user['wins'] : '0' + '/' + body.user['losses'] ? body.user['losses'] : '0', true);
       // embed.addField('K/D', body.user['kills'] ? body.user['kills'] : 0 / body.user['deaths'] ? body.user['deaths'] : 0, true);
       msg.channel.send({ embed });
