@@ -38,6 +38,7 @@ client.on('message', async (msg) => {
       embed.addField('Wins', body.user['wins'] ? body.user['wins'] : '0', true);
       embed.addField('Losses', body.user['losses'] ? body.user['losses'] : '0', true);
       embed.addField('Level', body.user.level, true);
+      embed.addField('Ranks', (await getPlayerRanksFromIds(body.user.ranks)).map(rank => `\`${rank.name.toUpperCase()}\``).join('\n'), true);
       // embed.addField('W/L', body.user['wins'] ? body.user['wins'] : '0' + '/' + body.user['losses'] ? body.user['losses'] : '0', true);
       // embed.addField('K/D', body.user['kills'] ? body.user['kills'] : 0 / body.user['deaths'] ? body.user['deaths'] : 0, true);
       msg.channel.send({ embed });
@@ -161,4 +162,10 @@ const getNumberEmoji = async (place) => {
     default:
       return ':question:';
   }
+}
+
+const getPlayerRanksFromIds = async (playerRankList) => {
+  const response = await fetch(config.apiUri + '/mc/ranks');
+  const serverRankList = await response.json();
+  return serverRankList.filter(rank => playerRankList.includes(rank._id));
 }
