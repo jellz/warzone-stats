@@ -1,3 +1,8 @@
+/*
+ * Revised on Sat Dec 08 2018
+ * Copyright (c) 2018 Daniel Gulic
+ */
+
 const { Client, MessageEmbed } = require('discord.js');
 const fetch = require('node-fetch');
 const client = new Client({ disableEveryone: true });
@@ -16,62 +21,72 @@ client.on('message', async (msg) => {
 
   if (msg.content.toLowerCase().startsWith(config.discordPrefix + 'player')) {
     if (!args[0]) return msg.channel.send(`**Usage!** ${config.discordPrefix}player <playername>`);
-      const response = await snek.get(config.apiURI + '/mc/player/' + args[0].toLowerCase());
-      if (response.body['notFound']) return msg.channel.send('Invalid player.');
+      const response = await fetch(config.apiURI + '/mc/player/' + args[0].toLowerCase());
+      const body = await response.json();
+      if (body['notFound']) return msg.channel.send('Invalid player.');
       const embed = new MessageEmbed();
       embed.setTitle(`${args[0]}'s Warzone statistics`);
       embed.setColor('RED');
       embed.setURL('https://warz.one/' + args[0]);
       embed.setDescription(`Displaying **${args[0]}**'s Warzone statistics.`);
-      embed.setThumbnail('https://crafatar.com/avatars/' + response.body.user['uuid']);
-      embed.addField('Kills', response.body.user['kills'] ? response.body.user['kills'] : '0', true);
-      embed.addField('Deaths', response.body.user['deaths'] ? response.body.user['deaths'] : '0', true);
-      embed.addField('Matches played', response.body.user['matches'] ? response.body.user['matches'].length : '0', true);
-      embed.addField('First joined', new Date(response.body.user['initialJoinDate']).toUTCString(), true);
-      embed.addField('Last joined', new Date(response.body.user['lastOnlineDate']).toUTCString(), true);
-      embed.addField('Wins', response.body.user['wins'] ? response.body.user['wins'] : '0', true);
-      embed.addField('Losses', response.body.user['losses'] ? response.body.user['losses'] : '0', true);
-      // embed.addField('W/L', response.body.user['wins'] ? response.body.user['wins'] : '0' + '/' + response.body.user['losses'] ? response.body.user['losses'] : '0', true);
-      // embed.addField('K/D', response.body.user['kills'] ? response.body.user['kills'] : 0 / response.body.user['deaths'] ? response.body.user['deaths'] : 0, true);
-      msg.channel.send({ embed: embed });
-  } else if (msg.content.toLowerCase().startsWith(config.discordPrefix + 'leaderboard')) {
-    const response = await snek.get(config.apiURI + '/mc/leaderboard/kills');
-    const leaderboard = response.body;
+      embed.setThumbnail('https://crafatar.com/avatars/' + body.user['uuid']);
+      embed.addField('Kills', body.user['kills'] ? body.user['kills'] : '0', true);
+      embed.addField('Deaths', body.user['deaths'] ? body.user['deaths'] : '0', true);
+      embed.addField('Matches played', body.user['matches'] ? body.user['matches'].length : '0', true);
+      embed.addField('First joined', new Date(body.user['initialJoinDate']).toUTCString(), true);
+      embed.addField('Last joined', new Date(body.user['lastOnlineDate']).toUTCString(), true);
+      embed.addField('Wins', body.user['wins'] ? body.user['wins'] : '0', true);
+      embed.addField('Losses', body.user['losses'] ? body.user['losses'] : '0', true);
+      // embed.addField('W/L', body.user['wins'] ? body.user['wins'] : '0' + '/' + body.user['losses'] ? body.user['losses'] : '0', true);
+      // embed.addField('K/D', body.user['kills'] ? body.user['kills'] : 0 / body.user['deaths'] ? body.user['deaths'] : 0, true);
+      msg.channel.send({ embed });
+  } else if (msg.content.toLowerCase().startsWith(config.discordPrefix + 'leaderboard') || msg.content.toLowerCase().startsWith(config.discordPrefix + 'lb')) {
+    const response = await fetch(config.apiURI + '/mc/leaderboard/kills');
+    const leaderboard = await response.json();
     var count = 0;
     const lbMsg = [];
     leaderboard.slice(0, 10).forEach(player => {
-        count++;
-        if (count !== 11) {
-            lbMsg.push(`**[#${count}]** | **${player.name}** with **${player.kills}** kills.`);
-        }
+      count++;
+      if (count !== 11) {
+        lbMsg.push(`${getNumberEmoji(count)} **${player.name}** (${player.kills} kills)`);
+      }
     });
     const embed = new MessageEmbed();
     embed.setTitle(`Displaying Top 10 Warzone players based on Kills...`);
     embed.setColor('RED');
     embed.setURL('https://warz.one/leaderboard');
     embed.setDescription(lbMsg.join('\n'));
-    msg.channel.send({ embed: embed });
+    msg.channel.send({ embed });
   } else if (msg.content.toLowerCase().startsWith(config.discordPrefix + 'help')) {
     const embed = new MessageEmbed();
     embed.setTitle('Displaying bot help');
     embed.setColor('RED');
-    const helpMsg = [
-      'This bot was made by [Jellz#1337](https://jellz.fun/) to assist Warzone community members with viewing players\' statistics.',
-      `Commands: \`${config.discordPrefix}help\` \`${config.discordPrefix}player <playername>\` \`${config.discordPrefix}leaderboard\` \`${config.discordPrefix}punishments\` \`${config.discordPrefix}server\` `,
-      'This bot is open-sourced on [Github.](https://github.com/jellz/warzonestats)'
-    ].join('\n');
-    embed.setDescription(helpMsg);
-    msg.channel.send({ embed: embed });
+    embed.setDescription('**View Warzone player stats, punishments, leaderboards and server info with Warzone Stats!**');
+    embed.addField('Commands', [
+      `\`${config.discordPrefix}help\``,
+      `\`${config.discordPrefix}player <playername>\``,
+      `\`${config.discordPrefix}server (game|discord)\``,
+      `\`${config.discordPrefix}ping\``,
+      `\`${config.discordPrefix}punishments\``,
+      `\`${config.discordPrefix}leaderboard\``
+    ].join('\n'), true);
+    embed.addField('Links', [
+      '[Open-source on Github](https://github.com/danielgulic/warzone-stats)',
+      '[PvP with friends](https://discord.gg/PtjsaW9)',
+      '[Creator\'s website](https://danielgulic.com)',
+      `[Invite the bot](https://discordapp.com/oauth2/authorize?client_id=${client.user.id}&scope=bot&permissions=19520)`
+    ]);
+    msg.channel.send({ embed });
   } else if (msg.content.toLowerCase().startsWith(config.discordPrefix + 'ping')) {
     msg.channel.send('Pong!');
   } else if (msg.content.toLowerCase().startsWith(config.discordPrefix + 'punishments')) {
     try {
-      const response = await snek.get(config.apiURI + '/mc/punishment/latest?limit=10');
-      const punishments = response.body;
+      const response = await fetch(config.apiURI + '/mc/punishment/latest?limit=10');
+      const punishments = await response.json();
       const punMsg = [];
       var punType;
       punishments.forEach(punishment => {
-        if (!punishment['punisherLoaded'].name) punishment['punisherLoaded'].name = 'Console';
+        if (!punishment['punisherLoaded']) punishment['punisherLoaded'] = { name: 'Console' };
         time = new Date(punishment['issued']).toString().split(' ')[4];
         punishment['type'].toLowerCase() == 'warn' ? punType = 'warned' : punType;
         punishment['type'].toLowerCase() == 'mute' ? punType = 'muted' : punType;
@@ -83,50 +98,66 @@ client.on('message', async (msg) => {
       embed.setTitle(`Displaying last 10 punishments on Warzone...`);
       embed.setColor('RED');
       embed.setDescription(punMsg.join('\n'));
-      msg.channel.send({ embed: embed });
+      msg.channel.send({ embed });
     } catch(err) {
       msg.channel.send('An error occurred. Please contact **daniel#0004** as you shouldn\'t be seeing this message.\n\n\n```js\n' + err + '```');
     }
   } else if (msg.content.toLowerCase().startsWith(config.discordPrefix + 'server')) {
-    if (!args[0]) return msg.channel.send(`**Usage!** ${config.discordPrefix}server <"game"|"discord">`);
+    if (!args[0]) return msg.channel.send(`**Usage!** ${config.discordPrefix}server (game|discord)`);
     if (args[0].toLowerCase() == 'discord') {
-      if (!msg.guild) return msg.author.send('You need to use this command in a Discord server.');
+      if (!msg.guild) return msg.author.send('You must use this command in a Discord server.');
       const embed = new MessageEmbed();
       embed.setTitle('Discord server information');
-      const infoDesc = [
-        `**Name** ${msg.guild.name}`,
-        `**ID** ${msg.guild.id}`,
-        `**Members** ${msg.guild.memberCount}`,
-        `**Verification level** ${msg.guild.verificationLevel}`,
-        `**Channels** ${msg.guild.channels.size}`,
-        `**Roles** ${msg.guild.roles.size}`,
-        `**Owner** ${msg.guild.owner.user.tag}`,
-        `**Region** ${msg.guild.region}`,
-        `**Emojis** ${msg.guild.emojis.size}`,
-      ].join('\n');
-      embed.setDescription(infoDesc);
-      // embed.setImage(msg.guild.iconURL());
+      embed.addField('Name', msg.guild.name, true);
+      embed.addField('ID', msg.guild.id, true);
+      embed.addField('Members', msg.guild.memberCount, true);
+      embed.addField('Verification level', msg.guild.verificationLevel, true);
+      embed.addField('Channels', msg.guild.channels.size, true);
+      embed.addField('Roles',  msg.guild.roles.size, true);
+      embed.addField('Owner', msg.guild.owner.user.tag, true);
+      embed.addField('Region', msg.guild.region, true);
+      embed.addField('Emojis', msg.guild.emojis.size);
       embed.setThumbnail(msg.guild.iconURL());
       embed.setColor('RED');
-      msg.channel.send({ embed: embed });
+      msg.channel.send({ embed });
     } else if (args[0].toLowerCase() == 'game') {
-      const response = await snek.post(config.apiURI + '/mc/server/stats').send({ name: 'Warzone' });
-      const info = response.body;
-      const infoDesc = [
-        '**IP** Warzone.minehut.gg',
-        `**Name** ${info['name']}`,
-        `**MOTD** ${info['motd']}`,
-        `**Players (${info['playerCount']}/${info['maxPlayers']})** ${info['players'].length > 0 ? info['players'].join(', ') : 'Currently no players online.'}`,
-        `**Spectators** ${info['spectatorCount']}`,
-        `**Map** ${info['map']}`,
-        `**Gamemode** ${info['gametype']}`
-      ].join('\n');
+      const response = await fetch(config.apiURI + '/mc/server/stats', { method: 'POST', body: JSON.stringify({ name: 'Warzone' }), headers: { 'Content-Type': 'application/json' } });
+      const info = await response.json();
       const embed = new MessageEmbed();
+      embed.addField('IP', 'play.warzone.network', true);
+      embed.addField('Name', info.name, true);
+      embed.addField('MOTD', info.motd, true);
+      embed.addField(`Players (${info.playerCount} / ${info.maxPlayers})`, info.players.length > 0 ? info.players.join(', ') : 'No players online')
       embed.setTitle('Minecraft server information');
-      embed.setDescription(infoDesc);
       embed.setColor('RED');
-      msg.channel.send({ embed: embed });
+      msg.channel.send({ embed });
     }
   }
 });
 
+const getNumberEmoji = async (place) => {
+  switch (place) {
+    case 1:
+      return ':one:';
+    case 2:
+      return ':two:';
+    case 3:
+      return ':three:';
+    case 4:
+      return ':four:';
+    case 5:
+      return ':five:';
+    case 6:
+      return ':six:';
+    case 7:
+      return ':seven:';
+    case 8:
+      return ':eight:';
+    case 9:
+      return ':nine:';
+    case 10:
+      return ':ten:';
+    default:
+      return ':question:';
+  }
+}
