@@ -4,7 +4,8 @@
   "description": "Discord bot for displaying stats from Minecraft PvP server Warzone",
   "main": "index.js",
   "scripts": {
-    "test": "echo \"Error: no test specified\" && exit 1"
+    "test": "echo \"Error: no test specified\" && exit 1",
+    "start": "node ."
   },
   "keywords": [],
   "author": "Daniel Gulic <danielgulic@gmail.com>",
