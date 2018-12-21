@@ -17,7 +17,7 @@ client.on('ready', async () => {
 
 client.on('message', async (msg) => {
   if (msg.author.bot || msg.author.id == client.user.id) return;
-  const args = msg.content.slice(0).trim(config.discordPrefix.length).split(/ +/g);
+  const args = msg.content.slice(config.discordPrefix.length).trim().split(/ +/g);
   args.shift();
 
   if (msg.content.toLowerCase().startsWith(config.discordPrefix + 'player')) {
