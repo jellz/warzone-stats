@@ -11,8 +11,12 @@ client.login(config.discordToken);
 
 client.on('ready', async () => {
   console.log(`${client.user.tag} is ready!`);
+  console.log(client.users.size);
   await client.user.setActivity(`with about ${client.users.size} users (${config.discordPrefix}help)`);
-  setInterval(() => client.user.setActivity(`with about ${client.users.size} users (${config.discordPrefix}help)`), 60000 * 7);
+  setInterval(() => {
+    console.log(client.users.size);
+    client.user.setActivity(`with about ${client.users.size} users (${config.discordPrefix}help)`)
+  }, 60000 * 7);
 });
 
 client.on('message', async (msg) => {
