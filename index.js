@@ -168,5 +168,9 @@ const getNumberEmoji = (place) => {
 const getPlayerRanksFromIds = async (playerRankList) => {
   const response = await fetch(config.apiUri + '/mc/ranks');
   const serverRankList = await response.json();
-  return serverRankList.filter(rank => playerRankList.includes(rank._id));
+  var ranks = serverRankList.filter(rank => playerRankList.includes(rank._id));
+  if (ranks.length == 0) {
+    ranks = [{"name":"none"}];
+  }
+  return ranks;
 }
