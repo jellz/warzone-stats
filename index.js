@@ -21,7 +21,9 @@ client.on('ready', async () => {
 
 client.on('message', async (msg) => {
   if (msg.author.bot || msg.author.id == client.user.id) return;
-  const args = msg.content.slice(0).trim(config.discordPrefix.length).split(/ +/g);
+	const prefixes = [config.discordPrefix, `<@${client.user.id}> `, '<@!${client.user.id}> '];
+	const prefix = prefixes.filter(p => message.content.toLowerCase().startsWith(p.toLowerCase()))[0];
+  const args = msg.content.slice(0).trim(prefix.length).split(/ +/g);
   args.shift();
 
   if (msg.content.toLowerCase().startsWith(config.discordPrefix + 'player')) {
