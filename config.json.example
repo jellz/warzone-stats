@@ -1,5 +1,6 @@
 {
   "discordToken": "xxx",
   "discordPrefix": "!",
-  "apiUri": "https://api.warz.one"
+  "apiUri": "https://api.warz.one",
+  "status": "with about ${client.users.size} users (${config.discordPrefix}help)"
 }
