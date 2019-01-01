@@ -11,12 +11,8 @@ client.login(config.discordToken);
 
 client.on('ready', async () => {
   console.log(`${client.user.tag} is ready!`);
-  console.log(client.users.size);
-  await client.user.setActivity(`with about ${client.users.size} users (${config.discordPrefix}help)`);
-  setInterval(() => {
-    console.log(client.users.size);
-    client.user.setActivity(`with about ${client.users.size} users (${config.discordPrefix}help)`)
-  }, 60000 * 7);
+  await setStatus(client)
+  setInterval(() => {setStatus(client)}, 60000 * 7);
 });
 
 client.on('message', async (msg) => {
@@ -173,4 +169,13 @@ const getPlayerRanksFromIds = async (playerRankList) => {
   const response = await fetch(config.apiUri + '/mc/ranks');
   const serverRankList = await response.json();
   return serverRankList.filter(rank => playerRankList.includes(rank._id));
+}
+
+async function setStatus(client) {
+  let status = config.status;
+  try {
+    status = eval(`\`${status}\``);
+    console.log(client.users.size);
+    await client.user.setActivity(status);
+  } catch(e) {}
 }
