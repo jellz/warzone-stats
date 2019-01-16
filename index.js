@@ -77,9 +77,7 @@ client.on('message', async (msg) => {
       `\`${config.discordPrefix}leaderboard\``
     ].join('\n'), true);
     embed.addField('Links', [
-      '[Open-source on Github](https://github.com/danielgulic/warzone-stats)',
       '[PvP with friends](https://discord.gg/PtjsaW9)',
-      '[Creator\'s website](https://danielgulic.com)',
       `[Invite the bot](https://discordapp.com/oauth2/authorize?client_id=${client.user.id}&scope=bot&permissions=281664)`
     ], true);
     embed.setFooter('Copyright 2018 © Daniel (jellz)');
