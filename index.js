@@ -161,7 +161,7 @@ const getNumberEmoji = (place) => {
     case 9:
       return ':nine:';
     case 10:
-      return ':one::zero:';
+      return ':keycap_ten:';
     default:
       return ':question:';
   }
