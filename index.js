@@ -129,7 +129,7 @@ client.on('message', async (msg) => {
       const response = await fetch(config.apiUri + '/mc/server/stats', { method: 'POST', body: JSON.stringify({ name: 'Warzone' }), headers: { 'Content-Type': 'application/json' } });
       const info = await response.json();
       const embed = new MessageEmbed();
-      embed.addField('IP', 'play.warzone.network', true);
+      embed.addField('IP', 'play.warz.one', true);
       embed.addField('Name', info.name, true);
       embed.addField('MOTD', info.motd, true);
       embed.addField(`Players (${info.playerCount} / ${info.maxPlayers})`, info.players.length > 0 ? info.players.join(', ') : 'No players online')
