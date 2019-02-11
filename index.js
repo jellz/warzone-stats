@@ -3,10 +3,10 @@
  * Copyright (c) 2018 Daniel
  */
 
-const { Client, MessageEmbed } = require('discord.js');
-const fetch = require('node-fetch');
-const client = new Client({ disableEveryone: true });
-const config = require('./config.json');
+var { Client, MessageEmbed } = require('discord.js');
+var fetch = require('node-fetch');
+var client = new Client({ disableEveryone: true });
+var config = require('./config.json');
 client.login(config.discordToken);
 
 client.on('ready', async () => {
@@ -21,15 +21,15 @@ client.on('ready', async () => {
 
 client.on('message', async (msg) => {
   if (msg.author.bot || msg.author.id == client.user.id) return;
-  const args = msg.content.slice(0).trim(config.discordPrefix.length).split(/ +/g);
+  var args = msg.content.slice(0).trim(config.discordPrefix.length).split(/ +/g);
   args.shift();
 
   if (msg.content.toLowerCase().startsWith(config.discordPrefix + 'player')) {
     if (!args[0]) return msg.channel.send(`**Usage!** ${config.discordPrefix}player <playername>`);
-      const response = await fetch(config.apiUrl + '/mc/player/' + args[0].toLowerCase());
-      const body = await response.json();
+      let response = await fetch(config.apiUrl + '/mc/player/' + args[0].toLowerCase());
+      let body = await response.json();
       if (body['notFound']) return msg.channel.send('Invalid player.');
-      const embed = new MessageEmbed();
+      let embed = new MessageEmbed();
       console.log(body.user);
       embed.setTitle(`${args[0]}'s statistics`);
       embed.setColor('RED');
@@ -42,30 +42,30 @@ client.on('message', async (msg) => {
       embed.addField('Last joined', new Date(body.user.lastOnlineDate).toUTCString(), true);
       embed.addField('Wins', body.user.wins ? body.user.wins : '0', true);
       embed.addField('Losses', body.user.losses, true);
+      embed.addField('W/L', (body.user.wins / body.user.losses).toFixed(2), true);
+      embed.addField('K/D', body.user.kills !== 0 && body.user.deaths !== 0 ? (body.user.kills / body.user.deaths).toFixed(2) : '*(None)*', true);
       embed.addField('Level', body.user.level, true);
       embed.addField('Wool destroys', body.user.wool_destroys, true);
-      embed.addField('Ranks', body.user.ranks.length === 0 ? '*(None)*' : (await getPlayerRanksFromIds(body.user.ranks)).map(rank => `\`${rank.name.toUpperCase()}\``).join('\n'), true);
-      embed.addField('W/L', body.user.wins / body.user.losses, true);
-      embed.addField('K/D', body.user.kills !== 0 && body.user.deaths !== 0 ? body.user.kills / body.user.deaths : '*(None)*', true);
+      embed.addField('Ranks', body.user.ranks.length === 0 ? '*(None)*' : (await getPlayerRanks(args[0])).map(rank => `\`${rank.name.toUpperCase()}\``).join('\n'), true);
       msg.channel.send({ embed });
   } else if (msg.content.toLowerCase().startsWith(config.discordPrefix + 'leaderboard') || msg.content.toLowerCase().startsWith(config.discordPrefix + 'lb')) {
-    const response = await fetch(config.apiUrl + '/mc/leaderboard/kills');
-    const leaderboard = await response.json();
+    let response = await fetch(config.apiUrl + '/mc/leaderboard/kills');
+    let leaderboard = await response.json();
+    let lbMsg = [];
     var count = 0;
-    const lbMsg = [];
     leaderboard.slice(0, 10).forEach(player => {
       count++;
       if (count !== 11) {
         lbMsg.push(`${getNumberEmoji(count)} **${player.name}** (${player.kills} kills)`);
       }
     });
-    const embed = new MessageEmbed();
+    let embed = new MessageEmbed();
     embed.setTitle(`Top 10 players on Warzone (sorted by kills)`);
     embed.setColor('RED');
     embed.setDescription(lbMsg.join('\n'));
     msg.channel.send({ embed });
   } else if (msg.content.toLowerCase().startsWith(config.discordPrefix + 'help')) {
-    const embed = new MessageEmbed();
+    let embed = new MessageEmbed();
     embed.setColor('RED');
     embed.setDescription('View Warzone player stats, punishments, leaderboards and server info with Warzone Stats!');
     embed.addField('Commands', [
@@ -86,9 +86,9 @@ client.on('message', async (msg) => {
     msg.channel.send('Pong!');
   } else if (msg.content.toLowerCase().startsWith(config.discordPrefix + 'punishments')) {
     try {
-      const response = await fetch(config.apiUrl + '/mc/punishment/latest?limit=10');
-      const punishments = await response.json();
-      const punMsg = [];
+      let response = await fetch(config.apiUrl + '/mc/punishment/latest?limit=10');
+      let punishments = await response.json();
+      let punMsg = [];
       var punType;
       punishments.forEach(punishment => {
         if (!punishment.punisherLoaded) punishment.punisherLoaded = { name: 'Console' };
@@ -99,7 +99,7 @@ client.on('message', async (msg) => {
         punishment.type.toLowerCase() == 'kick' ? punType = 'kicked' : punType;
         punMsg.push(`🔹 \`${time}\` **${punishment.punisherLoaded.name}** ${punType} **${punishment.punishedLoaded.name}** for **${punishment.reason}**`);
       });
-      const embed = new MessageEmbed();
+      let embed = new MessageEmbed();
       embed.setTitle(`10 most recent punishments on Warzone`);
       embed.setColor('RED');
       embed.setDescription(punMsg.join('\n'));
@@ -111,7 +111,7 @@ client.on('message', async (msg) => {
     if (!args[0]) return msg.channel.send(`**Usage!** ${config.discordPrefix}server (game|discord)`);
     if (args[0].toLowerCase() == 'discord') {
       if (!msg.guild) return msg.author.send('You must use this command in a Discord server.');
-      const embed = new MessageEmbed();
+      let embed = new MessageEmbed();
       embed.setTitle('Discord server information');
       embed.addField('Name', msg.guild.name, true);
       embed.addField('ID', msg.guild.id, true);
@@ -126,9 +126,9 @@ client.on('message', async (msg) => {
       embed.setColor('RED');
       msg.channel.send({ embed });
     } else if (args[0].toLowerCase() == 'game') {
-      const response = await fetch(config.apiUrl + '/mc/server/stats', { method: 'POST', body: JSON.stringify({ name: 'Warzone' }), headers: { 'Content-Type': 'application/json' } });
-      const info = await response.json();
-      const embed = new MessageEmbed();
+      let response = await fetch(config.apiUrl + '/mc/server/stats', { method: 'POST', body: JSON.stringify({ name: 'Warzone' }), headers: { 'Content-Type': 'application/json' } });
+      let info = await response.json();
+      let embed = new MessageEmbed();
       embed.addField('IP', 'play.warz.one', true);
       embed.addField('Name', info.name, true);
       embed.addField('MOTD', info.motd, true);
@@ -140,7 +140,7 @@ client.on('message', async (msg) => {
   }
 });
 
-const getNumberEmoji = (place) => {
+var getNumberEmoji = (place) => {
   switch (place) {
     case 1:
       return ':one:';
@@ -167,8 +167,8 @@ const getNumberEmoji = (place) => {
   }
 }
 
-const getPlayerRanksFromIds = async (playerRankList) => {
-  const response = await fetch(config.apiUrl + '/mc/ranks');
-  const serverRankList = await response.json();
-  return serverRankList.filter(rank => playerRankList.includes(rank._id));
+var getPlayerRanks = async (playerName) => {
+  let response = await fetch(config.apiUrl + `/mc/player/${playerName}/ranks`);
+  let playerRankList = await response.json();
+  return playerRankList;
 }
