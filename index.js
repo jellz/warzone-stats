@@ -75,6 +75,7 @@ client.on('message', async (msg) => {
       `\`${config.discordPrefix}ping\``,
       `\`${config.discordPrefix}punishments\``,
       `\`${config.discordPrefix}leaderboard\``
+      `\`${config.discordPrefix}deaths\``
     ].join('\n'), true);
     embed.addField('Links', [
       '[PvP with friends](https://discord.gg/PtjsaW9)',
@@ -93,16 +94,35 @@ client.on('message', async (msg) => {
       punishments.forEach(punishment => {
         if (!punishment.punisherLoaded) punishment.punisherLoaded = { name: 'Console' };
         time = new Date(punishment.issued).toString().split(' ')[4];
-        punishment.type.toLowerCase() == 'warn' ? punType = 'warned' : punType;
-        punishment.type.toLowerCase() == 'mute' ? punType = 'muted' : punType;
-        punishment.type.toLowerCase() == 'ban' ? punType = 'banned' : punType;
-        punishment.type.toLowerCase() == 'kick' ? punType = 'kicked' : punType;
+        punishment.type.toLowerCase() === 'warn' ? punType = 'warned' : punType;
+        punishment.type.toLowerCase() === 'mute' ? punType = 'muted' : punType;
+        punishment.type.toLowerCase() === 'ban' ? punType = 'banned' : punType;
+        punishment.type.toLowerCase() === 'kick' ? punType = 'kicked' : punType;
         punMsg.push(`🔹 \`${time}\` **${punishment.punisherLoaded.name}** ${punType} **${punishment.punishedLoaded.name}** for **${punishment.reason}**`);
       });
       let embed = new MessageEmbed();
       embed.setTitle(`10 most recent punishments on Warzone`);
       embed.setColor('RED');
       embed.setDescription(punMsg.join('\n'));
+      msg.channel.send({ embed });
+    } catch(err) {
+      msg.channel.send('An error occurred.\n\n\n```js\n' + err + '```');
+    }
+  } else if (msg.content.toLowerCase().startsWith(config.discordPrefix + 'deaths')) {
+    try {
+      let response = await fetch(config.apiUrl + '/mc/death/latest');
+      let deaths = await response.json();
+      var deathMsg = [];
+      deaths.forEach(death => {
+        if (!death.killerLoaded) death.killerLoaded = { name: 'Environment' };
+        time = new Date(death.date).toString().split(' ')[4];
+        deathMsg.push(`🔹 \`${time}\` **${death.killerLoaded.name}** killed **${death.playerLoaded.name}** with **${death.killerItem}**`);
+      });
+      let embed = new MessageEmbed();
+      embed.setTitle(`4 most recent deaths on Warzone`);
+      embed.setColor('RED');
+      embed.setDescription(deathMsg.join('\n'));
+      embed.setFooter('Due to API limitations, I can only display up to 4 recent deaths :(');
       msg.channel.send({ embed });
     } catch(err) {
       msg.channel.send('An error occurred.\n\n\n```js\n' + err + '```');
