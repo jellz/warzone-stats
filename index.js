@@ -1,5 +1,5 @@
 /*
- * Revised on Sat Dec 08 2018
+ * Rewritten on Sat Dec 08 2018
  * Copyright (c) 2018 Daniel
  */
 
@@ -40,13 +40,13 @@ client.on('message', async (msg) => {
       embed.addField('Matches played', body.user.matches.length, true);
       embed.addField('First joined', new Date(body.user.initialJoinDate).toUTCString(), true);
       embed.addField('Last joined', new Date(body.user.lastOnlineDate).toUTCString(), true);
-      // embed.addField('Wins', body.user.wins ? body.user.wins : '0', true);
-      // embed.addField('Losses', body.user.losses ? body.user.losses : '0', true);
+      embed.addField('Wins', body.user.wins ? body.user.wins : '0', true);
+      embed.addField('Losses', body.user.losses, true);
       embed.addField('Level', body.user.level, true);
       embed.addField('Wool destroys', body.user.wool_destroys, true);
       embed.addField('Ranks', body.user.ranks.length === 0 ? '*(None)*' : (await getPlayerRanksFromIds(body.user.ranks)).map(rank => `\`${rank.name.toUpperCase()}\``).join('\n'), true);
-      // embed.addField('W/L', body.user.wins ? body.user.wins : '0' + '/' + body.user.losses ? body.user.losses : '0', true);
-      // embed.addField('K/D', body.user.kills ? body.user.kills : 0 / body.user.deaths ? body.user.deaths : 0, true);
+      embed.addField('W/L', body.user.wins / body.user.losses, true);
+      embed.addField('K/D', body.user.kills !== 0 && body.user.deaths !== 0 ? body.user.kills / body.user.deaths : '*(None)*', true);
       msg.channel.send({ embed });
   } else if (msg.content.toLowerCase().startsWith(config.discordPrefix + 'leaderboard') || msg.content.toLowerCase().startsWith(config.discordPrefix + 'lb')) {
     const response = await fetch(config.apiUri + '/mc/leaderboard/kills');
