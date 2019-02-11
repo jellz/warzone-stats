@@ -177,6 +177,18 @@ client.on('message', async (msg) => {
       embed.setColor('RED');
       msg.channel.send({ embed });
     }
+  } else if (msg.content.toLowerCase().startsWith(config.discordPrefix + 'eval')) {
+    if (!config.evalers.includes(msg.author.id)) return;
+    try {
+      let code = args.join(' ');
+      let evaled = eval(code);
+      if (typeof evaled !== 'string') {
+        evaled = require('util').inspect(evaled);
+      }
+      msg.channel.send(clean(evaled), { code:'xl' });
+    } catch (err) {
+      msg.channel.send(`\`ERROR\` \`\`\`xl\n${clean(err)}\n\`\`\``);
+    }
   }
 });
 
@@ -211,4 +223,12 @@ var getPlayerRanks = async (playerName) => {
   let response = await fetch(config.apiUrl + `/mc/player/${playerName}/ranks`);
   let playerRankList = await response.json();
   return playerRankList;
+}
+
+var clean = (text) => {
+  if (typeof(text) === 'string') {
+    return text.replace(/`/g, '`' + String.fromCharCode(8203)).replace(/@/g, '@' + String.fromCharCode(8203));
+  } else {
+      return text;
+  }
 }

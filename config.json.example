@@ -2,4 +2,5 @@
   "discordToken": "xxx",
   "discordPrefix": "!",
   "apiUrl": "https://api.warz.one"
+  "evalers": ["id1", "id2"]
 }
