@@ -26,7 +26,7 @@ client.on('message', async (msg) => {
 
   if (msg.content.toLowerCase().startsWith(config.discordPrefix + 'player')) {
     if (!args[0]) return msg.channel.send(`**Usage!** ${config.discordPrefix}player <playername>`);
-      const response = await fetch(config.apiUri + '/mc/player/' + args[0].toLowerCase());
+      const response = await fetch(config.apiUrl + '/mc/player/' + args[0].toLowerCase());
       const body = await response.json();
       if (body['notFound']) return msg.channel.send('Invalid player.');
       const embed = new MessageEmbed();
@@ -49,7 +49,7 @@ client.on('message', async (msg) => {
       embed.addField('K/D', body.user.kills !== 0 && body.user.deaths !== 0 ? body.user.kills / body.user.deaths : '*(None)*', true);
       msg.channel.send({ embed });
   } else if (msg.content.toLowerCase().startsWith(config.discordPrefix + 'leaderboard') || msg.content.toLowerCase().startsWith(config.discordPrefix + 'lb')) {
-    const response = await fetch(config.apiUri + '/mc/leaderboard/kills');
+    const response = await fetch(config.apiUrl + '/mc/leaderboard/kills');
     const leaderboard = await response.json();
     var count = 0;
     const lbMsg = [];
@@ -86,7 +86,7 @@ client.on('message', async (msg) => {
     msg.channel.send('Pong!');
   } else if (msg.content.toLowerCase().startsWith(config.discordPrefix + 'punishments')) {
     try {
-      const response = await fetch(config.apiUri + '/mc/punishment/latest?limit=10');
+      const response = await fetch(config.apiUrl + '/mc/punishment/latest?limit=10');
       const punishments = await response.json();
       const punMsg = [];
       var punType;
@@ -126,7 +126,7 @@ client.on('message', async (msg) => {
       embed.setColor('RED');
       msg.channel.send({ embed });
     } else if (args[0].toLowerCase() == 'game') {
-      const response = await fetch(config.apiUri + '/mc/server/stats', { method: 'POST', body: JSON.stringify({ name: 'Warzone' }), headers: { 'Content-Type': 'application/json' } });
+      const response = await fetch(config.apiUrl + '/mc/server/stats', { method: 'POST', body: JSON.stringify({ name: 'Warzone' }), headers: { 'Content-Type': 'application/json' } });
       const info = await response.json();
       const embed = new MessageEmbed();
       embed.addField('IP', 'play.warz.one', true);
@@ -168,7 +168,7 @@ const getNumberEmoji = (place) => {
 }
 
 const getPlayerRanksFromIds = async (playerRankList) => {
-  const response = await fetch(config.apiUri + '/mc/ranks');
+  const response = await fetch(config.apiUrl + '/mc/ranks');
   const serverRankList = await response.json();
   return serverRankList.filter(rank => playerRankList.includes(rank._id));
 }

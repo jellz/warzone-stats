@@ -1,5 +1,5 @@
 {
   "discordToken": "xxx",
   "discordPrefix": "!",
-  "apiUri": "https://api.warz.one"
+  "apiUrl": "https://api.warz.one"
 }
