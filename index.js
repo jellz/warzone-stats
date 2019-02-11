@@ -49,21 +49,42 @@ client.on('message', async (msg) => {
       embed.addField('Ranks', body.user.ranks.length === 0 ? '*(None)*' : (await getPlayerRanks(args[0])).map(rank => `\`${rank.name.toUpperCase()}\``).join('\n'), true);
       msg.channel.send({ embed });
   } else if (msg.content.toLowerCase().startsWith(config.discordPrefix + 'leaderboard') || msg.content.toLowerCase().startsWith(config.discordPrefix + 'lb')) {
-    let response = await fetch(config.apiUrl + '/mc/leaderboard/kills');
-    let leaderboard = await response.json();
-    let lbMsg = [];
-    var count = 0;
-    leaderboard.slice(0, 10).forEach(player => {
-      count++;
-      if (count !== 11) {
-        lbMsg.push(`${getNumberEmoji(count)} **${player.name}** (${player.kills} kills)`);
-      }
-    });
-    let embed = new MessageEmbed();
-    embed.setTitle(`Top 10 players on Warzone (sorted by kills)`);
-    embed.setColor('RED');
-    embed.setDescription(lbMsg.join('\n'));
-    msg.channel.send({ embed });
+    if (!args[0]) return msg.channel.send(`**Usage!** ${config.discordPrefix}leaderboard (xp|kills)`);
+    if (args[0].toLowerCase() === 'xp' || args[0].toLowerCase() === 'level') {
+      let response = await fetch(config.apiUrl + '/mc/leaderboard/xp');
+      let leaderboard = await response.json();
+      let lbMsg = [];
+      var count = 0;
+      leaderboard.slice(0, 10).forEach(player => {
+        count++;
+        if (count !== 11) {
+          lbMsg.push(`${getNumberEmoji(count)} **${player.name}** (level ${player.level})`);
+        }
+      });
+      let embed = new MessageEmbed();
+      embed.setTitle(`Top 10 players on Warzone (sorted by xp)`);
+      embed.setColor('RED');
+      embed.setDescription(lbMsg.join('\n'));
+      msg.channel.send({ embed });
+    } else if (args[0].toLowerCase() === 'kills' || args[0].toLowerCase() === 'kill') {
+      let response = await fetch(config.apiUrl + '/mc/leaderboard/kills');
+      let leaderboard = await response.json();
+      let lbMsg = [];
+      var count = 0;
+      leaderboard.slice(0, 10).forEach(player => {
+        count++;
+        if (count !== 11) {
+          lbMsg.push(`${getNumberEmoji(count)} **${player.name}** (${player.kills} kills)`);
+        }
+      });
+      let embed = new MessageEmbed();
+      embed.setTitle(`Top 10 players on Warzone (sorted by kills)`);
+      embed.setColor('RED');
+      embed.setDescription(lbMsg.join('\n'));
+      msg.channel.send({ embed });
+    } else {
+      return msg.channel.send(`**Usage!** ${config.discordPrefix}leaderboard (xp|kills)`);
+    }
   } else if (msg.content.toLowerCase().startsWith(config.discordPrefix + 'help')) {
     let embed = new MessageEmbed();
     embed.setColor('RED');
@@ -74,7 +95,7 @@ client.on('message', async (msg) => {
       `\`${config.discordPrefix}server (game|discord)\``,
       `\`${config.discordPrefix}ping\``,
       `\`${config.discordPrefix}punishments\``,
-      `\`${config.discordPrefix}leaderboard\``
+      `\`${config.discordPrefix}leaderboard (xp|kills)\``
       `\`${config.discordPrefix}deaths\``
     ].join('\n'), true);
     embed.addField('Links', [
@@ -128,7 +149,6 @@ client.on('message', async (msg) => {
       msg.channel.send('An error occurred.\n\n\n```js\n' + err + '```');
     }
   } else if (msg.content.toLowerCase().startsWith(config.discordPrefix + 'server')) {
-    if (!args[0]) return msg.channel.send(`**Usage!** ${config.discordPrefix}server (game|discord)`);
     if (args[0].toLowerCase() == 'discord') {
       if (!msg.guild) return msg.author.send('You must use this command in a Discord server.');
       let embed = new MessageEmbed();
