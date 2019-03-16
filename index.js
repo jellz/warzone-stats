@@ -100,8 +100,9 @@ client.on('message', async (msg) => {
     ].join('\n'), true);
     embed.addField('Links', [
       '[PvP with friends](https://discord.gg/PtjsaW9)',
-      `[Invite the bot](https://discordapp.com/oauth2/authorize?client_id=${client.user.id}&scope=bot&permissions=281664)`
-    ], true);
+      `[Invite the bot](https://discordapp.com/oauth2/authorize?client_id=${client.user.id}&scope=bot&permissions=281664)`,
+      '[Creator\'s website](https://jlz.fun)'
+], true);
     embed.setFooter('Copyright 2018 © Daniel (jellz)');
     msg.channel.send({ embed });
   } else if (msg.content.toLowerCase().startsWith(config.discordPrefix + 'ping')) {
