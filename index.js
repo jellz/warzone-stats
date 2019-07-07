@@ -99,11 +99,12 @@ client.on('message', async (msg) => {
       `\`${config.discordPrefix}deaths\``
     ].join('\n'), true);
     embed.addField('Links', [
-      '[PvP with friends](https://discord.gg/PtjsaW9)',
+      '[Play with friends](https://discord.gg/PtjsaW9)',
       `[Invite the bot](https://discordapp.com/oauth2/authorize?client_id=${client.user.id}&scope=bot&permissions=281664)`,
+      '[Warzone's website](https://warz.one)
       '[Creator\'s website](https://jlz.fun)'
 ], true);
-    embed.setFooter('Copyright 2018 © Daniel (jellz)');
+    embed.setFooter('Copyright 2018 © Daniel Gulic (jellz)');
     msg.channel.send({ embed });
   } else if (msg.content.toLowerCase().startsWith(config.discordPrefix + 'ping')) {
     msg.channel.send('Pong!');
