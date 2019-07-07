@@ -95,7 +95,7 @@ client.on('message', async (msg) => {
       `\`${config.discordPrefix}server (game|discord)\``,
       `\`${config.discordPrefix}ping\``,
       `\`${config.discordPrefix}punishments\``,
-      `\`${config.discordPrefix}leaderboard (xp|kills)\``
+      `\`${config.discordPrefix}leaderboard (xp|kills)\``,
       `\`${config.discordPrefix}deaths\``
     ].join('\n'), true);
     embed.addField('Links', [
