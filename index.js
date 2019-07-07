@@ -101,7 +101,7 @@ client.on('message', async (msg) => {
     embed.addField('Links', [
       '[Play with friends](https://discord.gg/PtjsaW9)',
       `[Invite the bot](https://discordapp.com/oauth2/authorize?client_id=${client.user.id}&scope=bot&permissions=281664)`,
-      '[Warzone\'s website](https://warz.one)
+      '[Warzone\'s website](https://warz.one)',
       '[Creator\'s website](https://jlz.fun)'
 ], true);
     embed.setFooter('Copyright 2018 © Daniel Gulic (jellz)');
