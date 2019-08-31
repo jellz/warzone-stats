@@ -235,20 +235,9 @@ var getPlayerRanks = async (playerName) => {
 };
 
 var clean = (text) => {
-<<<<<<< HEAD
-	if (typeof text === 'string') {
-		return text
-			.replace(/`/g, '`' + String.fromCharCode(8203))
-			.replace(/@/g, '@' + String.fromCharCode(8203));
-	} else {
-		return text;
-	}
-};
-=======
   if (typeof(text) === 'string') {
     return text.replace(/`/g, '`' + String.fromCharCode(8203)).replace(/@/g, '@' + String.fromCharCode(8203));
   } else {
       return text;
   }
 }
->>>>>>> 7a27fc28a66b9c02e95305db282a5c869a1ccd09
