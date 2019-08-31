@@ -90,7 +90,7 @@ client.on('message', async (msg) => {
 	) {
 		if (!args[0])
 			return msg.channel.send(
-				`**Usage!** ${config.discordPrefix}leaderboard (xp|kills)`
+				`**Usage!** ${config.discordPrefix}leaderboard (xp|kills|wins)`
 			);
 		if (args[0].toLowerCase() === 'xp' || args[0].toLowerCase() === 'level') {
 			let response = await fetch(config.apiUrl + '/mc/leaderboard/xp');
@@ -135,9 +135,32 @@ client.on('message', async (msg) => {
 			embed.setColor('RED');
 			embed.setDescription(lbMsg.join('\n'));
 			msg.channel.send({ embed });
+		} else if (
+			args[0].toLowerCase() === 'wins' ||
+			args[0].toLowerCase() === 'win'
+		) {
+			let response = await fetch(config.apiUrl + '/mc/leaderboard/wins');
+			let leaderboard = await response.json();
+			let lbMsg = [];
+			var count = 0;
+			leaderboard.slice(0, 10).forEach((player) => {
+				count++;
+				if (count !== 11) {
+					lbMsg.push(
+						`${getNumberEmoji(count)} **${player.name}** (${
+							player.wins
+						} wins)`
+					);
+				}
+			});
+			let embed = new MessageEmbed();
+			embed.setTitle(`Top 10 players on Warzone (sorted by wins)`);
+			embed.setColor('RED');
+			embed.setDescription(lbMsg.join('\n'));
+			msg.channel.send({ embed });
 		} else {
 			return msg.channel.send(
-				`**Usage!** ${config.discordPrefix}leaderboard (xp|kills)`
+				`**Usage!** ${config.discordPrefix}leaderboard (xp|kills|wins)`
 			);
 		}
 	} else if (
