@@ -286,11 +286,7 @@ client.on('message', async (msg) => {
 			embed.setColor('RED');
 			msg.channel.send({ embed });
 		} else if (args[0].toLowerCase() == 'game') {
-			let response = await fetch(config.apiUrl + '/mc/server/stats', {
-				method: 'POST',
-				body: JSON.stringify({ name: 'Warzone' }),
-				headers: { 'Content-Type': 'application/json' }
-			});
+			let response = await fetch(config.apiUrl + '/mc/server/warzone');
 			let info = await response.json();
 			let embed = new MessageEmbed();
 			embed.addField('IP', 'play.warz.one', true);
