@@ -23,7 +23,7 @@ client.on('ready', async () => {
 	}, 60000 * 7);
 });
 
-client.on('message', async (msg) => {
+client.on('message', async msg => {
 	if (msg.author.bot || msg.author.id == client.user.id) return;
 	var args = msg.content
 		.slice(0)
@@ -77,7 +77,7 @@ client.on('message', async (msg) => {
 			body.user.ranks.length === 0
 				? '*(None)*'
 				: (await getPlayerRanks(args[0]))
-						.map((rank) => `\`${rank.name.toUpperCase()}\``)
+						.map(rank => `\`${rank.name.toUpperCase()}\``)
 						.join('\n'),
 			true
 		);
@@ -90,14 +90,14 @@ client.on('message', async (msg) => {
 	) {
 		if (!args[0])
 			return msg.channel.send(
-				`**Usage!** ${config.discordPrefix}leaderboard (xp|kills|wins)`
+				`**Usage!** ${config.discordPrefix}leaderboard (xp|kills|wins|losses)`
 			);
 		if (args[0].toLowerCase() === 'xp' || args[0].toLowerCase() === 'level') {
 			let response = await fetch(config.apiUrl + '/mc/leaderboard/xp');
 			let leaderboard = await response.json();
 			let lbMsg = [];
 			var count = 0;
-			leaderboard.slice(0, 10).forEach((player) => {
+			leaderboard.slice(0, 10).forEach(player => {
 				count++;
 				if (count !== 11) {
 					lbMsg.push(
@@ -120,7 +120,7 @@ client.on('message', async (msg) => {
 			let leaderboard = await response.json();
 			let lbMsg = [];
 			var count = 0;
-			leaderboard.slice(0, 10).forEach((player) => {
+			leaderboard.slice(0, 10).forEach(player => {
 				count++;
 				if (count !== 11) {
 					lbMsg.push(
@@ -143,13 +143,11 @@ client.on('message', async (msg) => {
 			let leaderboard = await response.json();
 			let lbMsg = [];
 			var count = 0;
-			leaderboard.slice(0, 10).forEach((player) => {
+			leaderboard.slice(0, 10).forEach(player => {
 				count++;
 				if (count !== 11) {
 					lbMsg.push(
-						`${getNumberEmoji(count)} **${player.name}** (${
-							player.wins
-						} wins)`
+						`${getNumberEmoji(count)} **${player.name}** (${player.wins} wins)`
 					);
 				}
 			});
@@ -158,9 +156,31 @@ client.on('message', async (msg) => {
 			embed.setColor('RED');
 			embed.setDescription(lbMsg.join('\n'));
 			msg.channel.send({ embed });
+		} else if (
+			args[0].toLowerCase() === 'losses' ||
+			args[0].toLowerCase() === 'loss' ||
+			args[0].toLowerCase() === 'lose'
+		) {
+			let response = await fetch(config.apiUrl + '/mc/leaderboard/losses');
+			let leaderboard = await response.json();
+			let lbMsg = [];
+			var count = 0;
+			leaderboard.slice(0, 10).forEach(player => {
+				count++;
+				if (count !== 11) {
+					lbMsg.push(
+						`${getNumberEmoji(count)} **${player.name}** (${player.losses} losses)`
+					);
+				}
+			});
+			let embed = new MessageEmbed();
+			embed.setTitle(`Top 10 players on Warzone (sorted by losses)`);
+			embed.setColor('RED');
+			embed.setDescription(lbMsg.join('\n'));
+			msg.channel.send({ embed });
 		} else {
 			return msg.channel.send(
-				`**Usage!** ${config.discordPrefix}leaderboard (xp|kills|wins)`
+				`**Usage!** ${config.discordPrefix}leaderboard (xp|kills|wins|losses)`
 			);
 		}
 	} else if (
@@ -179,7 +199,7 @@ client.on('message', async (msg) => {
 				`\`${config.discordPrefix}server (game|discord)\``,
 				`\`${config.discordPrefix}ping\``,
 				`\`${config.discordPrefix}punishments\``,
-				`\`${config.discordPrefix}leaderboard (xp|kills)\``,
+				`\`${config.discordPrefix}leaderboard (xp|kills|losses|wins)\``,
 				`\`${config.discordPrefix}deaths\``
 			].join('\n'),
 			true
@@ -210,7 +230,7 @@ client.on('message', async (msg) => {
 			let punishments = await response.json();
 			let punMsg = [];
 			var punType;
-			punishments.forEach((punishment) => {
+			punishments.forEach(punishment => {
 				if (!punishment.punisherLoaded)
 					punishment.punisherLoaded = { name: 'Console' };
 				time = new Date(punishment.issued).toString().split(' ')[4];
@@ -245,7 +265,7 @@ client.on('message', async (msg) => {
 			let response = await fetch(config.apiUrl + '/mc/death/latest');
 			let deaths = await response.json();
 			var deathMsg = [];
-			deaths.forEach((death) => {
+			deaths.forEach(death => {
 				if (!death.killerLoaded) death.killerLoaded = { name: 'Environment' };
 				time = new Date(death.date).toString().split(' ')[4];
 				deathMsg.push(
@@ -321,7 +341,7 @@ client.on('message', async (msg) => {
 	}
 });
 
-var getNumberEmoji = (place) => {
+var getNumberEmoji = place => {
 	switch (place) {
 		case 1:
 			return ':one:';
@@ -348,13 +368,13 @@ var getNumberEmoji = (place) => {
 	}
 };
 
-var getPlayerRanks = async (playerName) => {
+var getPlayerRanks = async playerName => {
 	let response = await fetch(config.apiUrl + `/mc/player/${playerName}/ranks`);
 	let playerRankList = await response.json();
 	return playerRankList;
 };
 
-var clean = (text) => {
+var clean = text => {
 	if (typeof text === 'string') {
 		return text
 			.replace(/`/g, '`' + String.fromCharCode(8203))
