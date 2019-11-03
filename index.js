@@ -77,7 +77,7 @@ client.on('message', async (msg) => {
 			body.user.ranks.length === 0
 				? '*(None)*'
 				: (await getPlayerRanks(args[0]))
-						.map((rank) => `\`${rank.name.toUpperCase()}\``)
+						.map((rank) => `**\`${rank.display || rank.name.toUpperCase()}\`**`)
 						.join('\n'),
 			true
 		);
