@@ -72,12 +72,18 @@ client.on('message', async msg => {
 		);
 		embed.addField('Level', body.user.level, true);
 		embed.addField('Wool destroys', body.user.wool_destroys, true);
+		let tags = stripColoursFromTags(body.user.tags);
+		embed.addField(
+			'Tags',
+			tags.length === 0 ? '*(None)*' : tags.join('\n'),
+			true
+		);
 		embed.addField(
 			'Ranks',
 			body.user.ranks.length === 0
 				? '*(None)*'
 				: (await getPlayerRanks(args[0]))
-						.map((rank) => `**\`${rank.display || rank.name.toUpperCase()}\`**`)
+						.map(rank => `**\`${rank.display || rank.name.toUpperCase()}\`**`)
 						.join('\n'),
 			true
 		);
@@ -169,7 +175,9 @@ client.on('message', async msg => {
 				count++;
 				if (count !== 11) {
 					lbMsg.push(
-						`${getNumberEmoji(count)} **${player.name}** (${player.losses} losses)`
+						`${getNumberEmoji(count)} **${player.name}** (${
+							player.losses
+						} losses)`
 					);
 				}
 			});
@@ -378,4 +386,10 @@ var clean = text => {
 	} else {
 		return text;
 	}
+};
+
+const colourRegex = /&[0-9A-FK-OR]/gi;
+
+var stripColoursFromTags = tags => {
+	return tags.map(t => `\`${t.replace(colourRegex, '')}\``);
 };
