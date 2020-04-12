@@ -45,6 +45,11 @@ form-data@^2.3.2:
     combined-stream "^1.0.6"
     mime-types "^2.1.12"
 
+humanize-duration@^3.22.0:
+  version "3.22.0"
+  resolved "https://registry.yarnpkg.com/humanize-duration/-/humanize-duration-3.22.0.tgz#b0b577e2071f231e69b71bfae25e1bb342ffb915"
+  integrity sha512-kq2Ncl1E8I7LJtjWhraQS8/LCsdt6fTQ+fwrGJ8dLSNFITW5YQpGWAgPgzjfIErAID7QHv0PA+HZBPfAf6f7IA==
+
 mime-db@~1.37.0:
   version "1.37.0"
   resolved "https://registry.yarnpkg.com/mime-db/-/mime-db-1.37.0.tgz#0b6a0ce6fdbe9576e25f1f2d2fde8830dc0ad0d8"
