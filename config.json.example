@@ -1,6 +1,6 @@
 {
   "discordToken": "xxx",
   "discordPrefix": "!",
-  "apiUrl": "https://api.warz.one"
+  "apiUrl": "https://api.warzone.network",
   "evalers": ["id1", "id2"]
 }
