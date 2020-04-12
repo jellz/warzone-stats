@@ -294,6 +294,7 @@ client.on('message', async msg => {
 	} else if (
 		msg.content.toLowerCase().startsWith(config.discordPrefix + 'server')
 	) {
+		if (!args[0]) return msg.channel.send('You need to provide a server type');
 		if (args[0].toLowerCase() == 'discord') {
 			if (!msg.guild)
 				return msg.author.send(
@@ -314,12 +315,15 @@ client.on('message', async msg => {
 			embed.setColor('RED');
 			msg.channel.send({ embed });
 		} else if (args[0].toLowerCase() == 'game') {
-			let response = await fetch(config.apiUrl + '/mc/server/warzone');
+			const server = args[1] || 'warzone';  
+			let response = await fetch(config.apiUrl + '/mc/server/' + server);
 			let info = await response.json();
+			if (info.error) return msg.channel.send("Couldn't fetch server information. Check the server name?");
 			let embed = new MessageEmbed();
-			embed.addField('IP', 'play.warz.one', true);
+			embed.addField('IP', serverIps[info.id] || 'play.warz.one', true);
 			embed.addField('Name', info.name, true);
 			embed.addField('MOTD', info.motd, true);
+			embed.addField('Map', info.map, true);
 			embed.addField(
 				`Players (${info.playerCount} / ${info.maxPlayers})`,
 				info.players.length > 0 ? info.players.join(', ') : 'No players online'
@@ -344,6 +348,11 @@ client.on('message', async msg => {
 		}
 	}
 });
+
+const serverIps = {
+	'infected': 'infected.warz.one',
+	'warzone': 'play.warz.one'
+};
 
 var getNumberEmoji = place => {
 	switch (place) {
