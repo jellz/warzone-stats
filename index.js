@@ -5,6 +5,7 @@
 
 var { Client, MessageEmbed } = require('discord.js');
 var fetch = require('node-fetch');
+var humanize = require('humanize-duration');
 var client = new Client({ disableEveryone: true });
 var config = require('./config.json');
 client.login(config.discordToken);
@@ -242,6 +243,11 @@ client.on('message', async msg => {
 				if (!punishment.punisherLoaded)
 					punishment.punisherLoaded = { name: 'Console' };
 				time = new Date(punishment.issued).toString().split(' ')[4];
+				const difference = punishment.expires - punishment.issued;
+				let duration;
+				if (difference === 0) duration = null;
+				else if (punishment.expires === -1) duration = 'permanent';
+				else duration = humanize(punishment.expires - punishment.issued, { largest: 1 });
 				punishment.type.toLowerCase() === 'warn'
 					? (punType = 'warned')
 					: punType;
@@ -255,7 +261,7 @@ client.on('message', async msg => {
 					? (punType = 'kicked')
 					: punType;
 				punMsg.push(
-					`🔹 \`${time}\` **${punishment.punisherLoaded.name}** ${punType} **${punishment.punishedLoaded.name}** for **${punishment.reason}**`
+					`🔹 \`${time}\` **${punishment.punishedLoaded.name}** was ${punType} for **${punishment.reason}** ${duration ? '(' + duration + ')' : ''}`
 				);
 			});
 			let embed = new MessageEmbed();
