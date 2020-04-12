@@ -315,10 +315,13 @@ client.on('message', async msg => {
 			embed.setColor('RED');
 			msg.channel.send({ embed });
 		} else if (args[0].toLowerCase() == 'game') {
-			const server = args[1] || 'warzone';  
+			const server = args[1] || 'warzone';
 			let response = await fetch(config.apiUrl + '/mc/server/' + server);
 			let info = await response.json();
-			if (info.error) return msg.channel.send("Couldn't fetch server information. Check the server name?");
+			if (info.error)
+				return msg.channel.send(
+					"Couldn't fetch server information. Check the server name?"
+				);
 			let embed = new MessageEmbed();
 			embed.addField('IP', serverIps[info.id] || 'play.warz.one', true);
 			embed.addField('Name', info.name, true);
@@ -350,8 +353,8 @@ client.on('message', async msg => {
 });
 
 const serverIps = {
-	'infected': 'infected.warz.one',
-	'warzone': 'play.warz.one'
+	infected: 'infected.warz.one',
+	warzone: 'play.warz.one'
 };
 
 var getNumberEmoji = place => {
