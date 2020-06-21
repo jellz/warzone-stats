@@ -38,7 +38,7 @@ client.on('message', async msg => {
 				`**Usage!** ${config.discordPrefix}player <playername>`
 			);
 		let response = await fetch(
-			config.apiUrl + '/mc/player/' + args[0].toLowerCase()
+			config.apiUrl + '/mc/player/' + args[0].toLowerCase() + '?simple=true'
 		);
 		let body = await response.json();
 		if (body['notFound']) return msg.channel.send('Invalid player.');
@@ -50,7 +50,7 @@ client.on('message', async msg => {
 		embed.setThumbnail('https://crafatar.com/avatars/' + body.user.uuid);
 		embed.addField('Kills', body.user.kills ? body.user.kills : '0', true);
 		embed.addField('Deaths', body.user.deaths ? body.user.deaths : '0', true);
-		embed.addField('Matches played', body.user.matches.length, true);
+		embed.addField('Matches played', body.user.matches, true);
 		embed.addField(
 			'First joined',
 			new Date(body.user.initialJoinDate).toUTCString(),
@@ -209,7 +209,7 @@ client.on('message', async msg => {
 				`\`${config.discordPrefix}ping\``,
 				`\`${config.discordPrefix}punishments\``,
 				`\`${config.discordPrefix}leaderboard (xp|kills|losses|wins)\``,
-				`\`${config.discordPrefix}deaths\``
+				`\`${config.discordPrefix}deaths\``,
 			].join('\n'),
 			true
 		);
@@ -219,7 +219,7 @@ client.on('message', async msg => {
 				'[Play with friends](https://discord.gg/PtjsaW9)',
 				`[Invite the bot](https://discordapp.com/oauth2/authorize?client_id=${client.user.id}&scope=bot&permissions=281664)`,
 				"[Warzone's website](https://warz.one)",
-				"[Creator's website](https://jlz.fun)"
+				"[Creator's website](https://jlz.fun)",
 			],
 			true
 		);
@@ -247,7 +247,10 @@ client.on('message', async msg => {
 				let duration;
 				if (difference === 0) duration = null;
 				else if (punishment.expires === -1) duration = 'permanent';
-				else duration = humanize(punishment.expires - punishment.issued, { largest: 1 });
+				else
+					duration = humanize(punishment.expires - punishment.issued, {
+						largest: 1,
+					});
 				punishment.type.toLowerCase() === 'warn'
 					? (punType = 'warned')
 					: punType;
@@ -261,7 +264,11 @@ client.on('message', async msg => {
 					? (punType = 'kicked')
 					: punType;
 				punMsg.push(
-					`🔹 \`${time}\` **${punishment.punishedLoaded.name}** was ${punType} for **${punishment.reason}** ${duration ? '(' + duration + ')' : ''}`
+					`🔹 \`${time}\` **${
+						punishment.punishedLoaded.name
+					}** was ${punType} for **${punishment.reason}** ${
+						duration ? '(' + duration + ')' : ''
+					}`
 				);
 			});
 			let embed = new MessageEmbed();
@@ -360,7 +367,7 @@ client.on('message', async msg => {
 
 const serverIps = {
 	infected: 'infected.warz.one',
-	warzone: 'play.warz.one'
+	warzone: 'play.warz.one',
 };
 
 var getNumberEmoji = place => {
