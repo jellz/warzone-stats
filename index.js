@@ -90,6 +90,23 @@ client.on('message', async msg => {
 		);
 		msg.channel.send({ embed });
 	} else if (
+		msg.content.toLowerCase().startsWith(config.discordPrefix + 'staff') &&
+		msg.guild.id === '333669866735271938'
+	) {
+		const staff = [];
+		msg.guild.members.forEach(m => {
+			const roles = m.roles.map(r => r.name.toLowerCase());
+			if (
+				(roles.includes('moderator') || roles.includes('junior moderator')) &&
+				(m.presence.status === 'online' || m.presence.status === 'dnd')
+			)
+				staff.push(m);
+		});
+		if (staff.length < 1) return msg.reply('No online staff right now');
+		msg.channel.send(
+			`Online staff:\n\n${staff.map(s => s.toString()).join(', ')}`
+		);
+	} else if (
 		msg.content
 			.toLowerCase()
 			.startsWith(config.discordPrefix + 'leaderboard') ||
