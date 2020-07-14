@@ -49,8 +49,15 @@ module.exports.run = async (client, msg, args) => {
   msg.channel.send({ embed });
 };
 
+const colourRegex = /&[0-9A-FK-OR]/gi;
 var stripColoursFromTags = tags => {
 	return tags.map(t => `\`${t.replace(colourRegex, '')}\``);
+};
+
+var getPlayerRanks = async playerName => {
+	let response = await fetch(config.apiUrl + `/mc/player/${playerName}/ranks`);
+	let playerRankList = await response.json();
+	return playerRankList;
 };
 
 module.exports.help = {

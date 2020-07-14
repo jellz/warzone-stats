@@ -7,6 +7,7 @@
   "discordToken": "xxx",
   "discordPrefix": "!",
   "apiUrl": "https://api.warzone.network",
+  "apiid": "warzone",
   "evalers": ["id1", "id2"],
 
   "gameMessage": false
