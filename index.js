@@ -35,12 +35,12 @@ client.on('ready', async () => {
 	console.log(client.users.size);
 	if (config.gameMessage == true) {
 		await client.user.setActivity(
-			`with about ${client.users.size} users (${config.discordPrefix}help)`
+			`with about ${client.users.cache.size} users (${config.discordPrefix}help)`
 		);
 		setInterval(() => {
 			console.log(client.users.size);
 			client.user.setActivity(
-				`with about ${client.users.size} users (${config.discordPrefix}help)`
+				`with about ${client.users.cache.size} users (${config.discordPrefix}help)`
 			);
 		}, 60000 * 7);
 	};
