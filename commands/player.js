@@ -1,5 +1,6 @@
-const Discord = require('discord.js');
-const config = require('../config.json');
+var { Client, MessageEmbed } = require('discord.js');
+var config = require('../config.json');
+var fetch = require('node-fetch');
 
 module.exports.run = async (client, msg, args) => {
   if (!args[0]) return msg.channel.send(`**Usage!** ${config.discordPrefix}player <playername>`);
@@ -19,16 +20,8 @@ module.exports.run = async (client, msg, args) => {
   embed.addField('Kills', body.user.kills ? body.user.kills : '0', true);
   embed.addField('Deaths', body.user.deaths ? body.user.deaths : '0', true);
   embed.addField('Matches played', body.user.matches, true);
-  embed.addField(
-    'First joined',
-    new Date(body.user.initialJoinDate).toUTCString(),
-    true
-  );
-  embed.addField(
-    'Last joined',
-    new Date(body.user.lastOnlineDate).toUTCString(),
-    true
-  );
+  embed.addField('First joined', new Date(body.user.initialJoinDate).toUTCString(), true);
+  embed.addField('Last joined', new Date(body.user.lastOnlineDate).toUTCString(), true);
   embed.addField('Wins', body.user.wins ? body.user.wins : '0', true);
   embed.addField('Losses', body.user.losses, true);
   embed.addField('W/L', (body.user.wins / body.user.losses).toFixed(2), true);
@@ -41,12 +34,9 @@ module.exports.run = async (client, msg, args) => {
   );
   embed.addField('Level', body.user.level, true);
   embed.addField('Wool destroys', body.user.wool_destroys, true);
+
   let tags = stripColoursFromTags(body.user.tags);
-  embed.addField(
-    'Tags',
-    tags.length === 0 ? '*(None)*' : tags.join('\n'),
-    true
-  );
+  embed.addField('Tags', tags.length === 0 ? '*(None)*' : tags.join('\n'), true);
   embed.addField(
     'Ranks',
     body.user.ranks.length === 0
@@ -57,6 +47,10 @@ module.exports.run = async (client, msg, args) => {
     true
   );
   msg.channel.send({ embed });
+};
+
+var stripColoursFromTags = tags => {
+	return tags.map(t => `\`${t.replace(colourRegex, '')}\``);
 };
 
 module.exports.help = {
