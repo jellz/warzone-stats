@@ -13,15 +13,17 @@ client.login(config.discordToken);
 client.on('ready', async () => {
 	console.log(`${client.user.tag} is ready!`);
 	console.log(client.users.size);
-	await client.user.setActivity(
-		`with about ${client.users.size} users (${config.discordPrefix}help)`
-	);
-	setInterval(() => {
-		console.log(client.users.size);
-		client.user.setActivity(
+	if (config.gameMessage == true) {
+		await client.user.setActivity(
 			`with about ${client.users.size} users (${config.discordPrefix}help)`
 		);
-	}, 60000 * 7);
+		setInterval(() => {
+			console.log(client.users.size);
+			client.user.setActivity(
+				`with about ${client.users.size} users (${config.discordPrefix}help)`
+			);
+		}, 60000 * 7);
+	};
 });
 
 client.on('message', async msg => {
@@ -46,7 +48,7 @@ client.on('message', async msg => {
 		console.log(body.user);
 		embed.setTitle(`${args[0]}'s statistics`);
 		embed.setColor('RED');
-		embed.setDescription(`Displaying **${args[0]}**'s Warzone statistics.`);
+		embed.setDescription(`Displaying **${args[0]}**'s ${config.servername} statistics.`);
 		embed.setThumbnail('https://crafatar.com/avatars/' + body.user.uuid);
 		embed.addField('Kills', body.user.kills ? body.user.kills : '0', true);
 		embed.addField('Deaths', body.user.deaths ? body.user.deaths : '0', true);
@@ -133,7 +135,7 @@ client.on('message', async msg => {
 				}
 			});
 			let embed = new MessageEmbed();
-			embed.setTitle(`Top 10 players on Warzone (sorted by xp)`);
+			embed.setTitle(`Top 10 players on ${config.servername} (sorted by xp)`);
 			embed.setColor('RED');
 			embed.setDescription(lbMsg.join('\n'));
 			msg.channel.send({ embed });
@@ -156,7 +158,7 @@ client.on('message', async msg => {
 				}
 			});
 			let embed = new MessageEmbed();
-			embed.setTitle(`Top 10 players on Warzone (sorted by kills)`);
+			embed.setTitle(`Top 10 players on ${config.servername} (sorted by kills)`);
 			embed.setColor('RED');
 			embed.setDescription(lbMsg.join('\n'));
 			msg.channel.send({ embed });
@@ -177,7 +179,7 @@ client.on('message', async msg => {
 				}
 			});
 			let embed = new MessageEmbed();
-			embed.setTitle(`Top 10 players on Warzone (sorted by wins)`);
+			embed.setTitle(`Top 10 players on ${config.servername} (sorted by wins)`);
 			embed.setColor('RED');
 			embed.setDescription(lbMsg.join('\n'));
 			msg.channel.send({ embed });
@@ -201,7 +203,7 @@ client.on('message', async msg => {
 				}
 			});
 			let embed = new MessageEmbed();
-			embed.setTitle(`Top 10 players on Warzone (sorted by losses)`);
+			embed.setTitle(`Top 10 players on ${config.servername} (sorted by losses)`);
 			embed.setColor('RED');
 			embed.setDescription(lbMsg.join('\n'));
 			msg.channel.send({ embed });
@@ -216,7 +218,7 @@ client.on('message', async msg => {
 		let embed = new MessageEmbed();
 		embed.setColor('RED');
 		embed.setDescription(
-			'View Warzone player stats, punishments, leaderboards and server info with Warzone Stats!'
+			`View ${config.servername} player stats, punishments, leaderboards and server info with ${config.servername} Stats!`
 		);
 		embed.addField(
 			'Commands',
@@ -234,10 +236,10 @@ client.on('message', async msg => {
 		embed.addField(
 			'Links',
 			[
-				'[Play with friends](https://discord.gg/PtjsaW9)',
+				`[Play with friends](${config.serverdiscord})`,
 				`[Invite the bot](https://discordapp.com/oauth2/authorize?client_id=${client.user.id}&scope=bot&permissions=281664)`,
-				"[Warzone's website](https://warz.one)",
-				"[Creator's website](https://jlz.fun)",
+				`[${config.servername}'s website](${config.serverwebsite})`,
+				`[Creator's website](https://jlz.fun)`,
 			],
 			true
 		);
@@ -290,7 +292,7 @@ client.on('message', async msg => {
 				);
 			});
 			let embed = new MessageEmbed();
-			embed.setTitle(`10 most recent punishments on Warzone`);
+			embed.setTitle(`10 most recent punishments on ${config.servername}`);
 			embed.setColor('RED');
 			embed.setDescription(punMsg.join('\n'));
 			msg.channel.send({ embed });
@@ -312,7 +314,7 @@ client.on('message', async msg => {
 				);
 			});
 			let embed = new MessageEmbed();
-			embed.setTitle(`4 most recent deaths on Warzone`);
+			embed.setTitle(`4 most recent deaths on ${config.servername}`);
 			embed.setColor('RED');
 			embed.setDescription(deathMsg.join('\n'));
 			embed.setFooter(
@@ -354,7 +356,7 @@ client.on('message', async msg => {
 					"Couldn't fetch server information. Check the server name?"
 				);
 			let embed = new MessageEmbed();
-			embed.addField('IP', serverIps[info.id] || 'play.warz.one', true);
+			embed.addField('IP', serverIps[info.id] || `${config.serverip}`, true);
 			embed.addField('Name', info.name, true);
 			embed.addField('MOTD', info.motd, true);
 			embed.addField('Map', info.map, true);

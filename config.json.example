@@ -1,6 +1,13 @@
 {
+  "servername": "Warzone",
+  "serverwebsite": "https://warzone.network/",
+  "serverip": "play.craftingforchrist.net",
+  "serverdiscord": "https://warz.one/discord",
+
   "discordToken": "xxx",
   "discordPrefix": "!",
   "apiUrl": "https://api.warzone.network",
-  "evalers": ["id1", "id2"]
+  "evalers": ["id1", "id2"],
+
+  "gameMessage": false
 }
