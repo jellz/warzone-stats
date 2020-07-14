@@ -12,6 +12,7 @@
   "license": "ISC",
   "dependencies": {
     "discord.js": "discordjs/discord.js",
+    "fs": "0.0.1-security",
     "humanize-duration": "^3.22.0",
     "node-fetch": "^2.3.0"
   }

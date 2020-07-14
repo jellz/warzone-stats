@@ -4,11 +4,31 @@
  */
 
 var { Client, MessageEmbed } = require('discord.js');
+const Discord = require('discord.js');
 var fetch = require('node-fetch');
 var humanize = require('humanize-duration');
-var client = new Client({ disableEveryone: true });
+var client = new Discord.Client({ disableEveryone: true });
 var config = require('./config.json');
+var fs = require('fs');
+
+client.commands = new Discord.Collection();
 client.login(config.discordToken);
+
+// Reads all commands & boot them in.
+fs.readdir('./commands', (err, files) => {
+  if (err) console.log(err);
+  let jsfile = files.filter(f => f.split(".").pop() === 'js')
+  if (jsfile.length <= 0) {
+    console.log('Couldn\'t find commands.');
+    return
+  }
+
+  jsfile.forEach((files, i) => {
+    let props = require(`./commands/${files}`);
+    console.log(`${files} has been loaded.`);
+    client.commands.set(props.help.name, props);
+  })
+});
 
 client.on('ready', async () => {
 	console.log(`${client.user.tag} is ready!`);
@@ -27,12 +47,26 @@ client.on('ready', async () => {
 });
 
 client.on('message', async msg => {
-	if (msg.author.bot || msg.author.id == client.user.id) return;
-	var args = msg.content
-		.slice(0)
-		.trim(config.discordPrefix.length)
-		.split(/ +/g);
-	args.shift();
+	if (msg.author.bot) return;
+  if (msg.channel.type === "dm") return;
+
+  let prefix = config.discordPrefix;
+  let messageArray = msg.content.split(" ");
+  let cmd = messageArray[0];
+  let args = messageArray.slice(1);
+
+  if (!cmd.startsWith(prefix)) return;
+  let commandfile = client.commands.get(cmd.slice(prefix.length));
+  if (commandfile) commandfile.run(client, message, args);
+
+
+
+	// if (msg.author.bot || msg.author.id == client.user.id) return;
+	// var args = msg.content
+	// 	.slice(0)
+	// 	.trim(config.discordPrefix.length)
+	// 	.split(/ +/g);
+	// args.shift();
 
 	if (msg.content.toLowerCase().startsWith(config.discordPrefix + 'player')) {
 		if (!args[0])
