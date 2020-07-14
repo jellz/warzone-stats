@@ -59,46 +59,19 @@ client.on('message', async msg => {
   let commandfile = client.commands.get(cmd.slice(prefix.length));
   if (commandfile) commandfile.run(client, msg, args);
 
-  
 
-	if (
-		msg.content.toLowerCase().startsWith(config.discordPrefix + 'help')
-	) {
-		let embed = new MessageEmbed();
-		embed.setColor('RED');
-		embed.setDescription(
-			`View ${config.servername} player stats, punishments, leaderboards and server info with ${config.servername} Stats!`
-		);
-		embed.addField(
-			'Commands',
-			[
-				`\`${config.discordPrefix}help\``,
-				`\`${config.discordPrefix}player <playername>\``,
-				`\`${config.discordPrefix}server (game|discord)\``,
-				`\`${config.discordPrefix}ping\``,
-				`\`${config.discordPrefix}punishments\``,
-				`\`${config.discordPrefix}leaderboard (xp|kills|losses|wins)\``,
-				`\`${config.discordPrefix}deaths\``,
-			].join('\n'),
-			true
-		);
-		embed.addField(
-			'Links',
-			[
-				`[Play with friends](${config.serverdiscord})`,
-				`[Invite the bot](https://discordapp.com/oauth2/authorize?client_id=${client.user.id}&scope=bot&permissions=281664)`,
-				`[${config.servername}'s website](${config.serverwebsite})`,
-				`[Creator's website](https://jlz.fun)`,
-			],
-			true
-		);
-		embed.setFooter('Copyright 2018 © Daniel Gulic (jellz)');
-		msg.channel.send({ embed });
-	} else if (
-		msg.content.toLowerCase().startsWith(config.discordPrefix + 'ping')
-	) {
-		msg.channel.send('Pong!');
-	} else if (
+
+
+
+
+
+
+
+
+
+
+
+  if (
 		msg.content.toLowerCase().startsWith(config.discordPrefix + 'punishments')
 	) {
 		try {
@@ -237,33 +210,6 @@ client.on('message', async msg => {
 const serverIps = {
 	infected: 'infected.warz.one',
 	warzone: 'play.warz.one',
-};
-
-var getNumberEmoji = place => {
-	switch (place) {
-		case 1:
-			return ':one:';
-		case 2:
-			return ':two:';
-		case 3:
-			return ':three:';
-		case 4:
-			return ':four:';
-		case 5:
-			return ':five:';
-		case 6:
-			return ':six:';
-		case 7:
-			return ':seven:';
-		case 8:
-			return ':eight:';
-		case 9:
-			return ':nine:';
-		case 10:
-			return ':keycap_ten:';
-		default:
-			return ':question:';
-	}
 };
 
 var getPlayerRanks = async playerName => {
