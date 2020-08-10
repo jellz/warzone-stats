@@ -14,12 +14,12 @@ client.on('ready', async () => {
 	console.log(`${client.user.tag} is ready!`);
 	console.log(client.users.size);
 	await client.user.setActivity(
-		`with about ${client.users.size} users (${config.discordPrefix}help)`
+		`with about ${client.users.cache.size} users (${config.discordPrefix}help)`
 	);
 	setInterval(() => {
 		console.log(client.users.size);
 		client.user.setActivity(
-			`with about ${client.users.size} users (${config.discordPrefix}help)`
+			`with about ${client.users.cache.size} users (${config.discordPrefix}help)`
 		);
 	}, 60000 * 7);
 });
