@@ -32,7 +32,7 @@ client.on('message', async msg => {
 		.split(/ +/g);
 	args.shift();
 
-	if (msg.content.toLowerCase().startsWith(config.discordPrefix + 'player')) {
+	if (msg.content.toLowerCase().startsWith(config.discordPrefix + 'player') || msg.content.toLowerCase().startsWith(config.discordPrefix + 'stats')) {
 		if (!args[0])
 			return msg.channel.send(
 				`**Usage!** ${config.discordPrefix}player <playername>`
