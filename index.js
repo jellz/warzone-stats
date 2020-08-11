@@ -14,12 +14,12 @@ client.on('ready', async () => {
 	console.log(`${client.user.tag} is ready!`);
 	console.log(client.users.size);
 	await client.user.setActivity(
-		`with about ${client.users.size} users (${config.discordPrefix}help)`
+		`with about ${client.users.cache.size} users (${config.discordPrefix}help)`
 	);
 	setInterval(() => {
 		console.log(client.users.size);
 		client.user.setActivity(
-			`with about ${client.users.size} users (${config.discordPrefix}help)`
+			`with about ${client.users.cache.size} users (${config.discordPrefix}help)`
 		);
 	}, 60000 * 7);
 });
@@ -32,7 +32,7 @@ client.on('message', async msg => {
 		.split(/ +/g);
 	args.shift();
 
-	if (msg.content.toLowerCase().startsWith(config.discordPrefix + 'player')) {
+	if (msg.content.toLowerCase().startsWith(config.discordPrefix + 'player') || msg.content.toLowerCase().startsWith(config.discordPrefix + 'stats')) {
 		if (!args[0])
 			return msg.channel.send(
 				`**Usage!** ${config.discordPrefix}player <playername>`
