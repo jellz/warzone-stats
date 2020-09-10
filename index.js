@@ -98,7 +98,7 @@ client.on('message', async msg => {
 			const roles = m.roles.map(r => r.name.toLowerCase());
 			if (!(m.presence.status === 'online' || m.presence.status === 'dnd'))
 				return;
-			if (roles.includes('moderator') || roles.includes('junior moderator'))
+			if (roles.includes('moderator') || roles.includes('junior moderator') || roles.includes('senior moderator'))
 				staff.push(m);
 			if (m.id === '142730862948122625' || m.id === '250536623270264833')
 				staff.push(m);
