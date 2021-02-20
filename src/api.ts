@@ -23,7 +23,10 @@ export const getLatestPunishments = async () => {
 };
 
 export const getPlayer = async (name: string) => {
-	const res = await fetch(API_BASE + '/mc/player/' + name, requestOptions);
+	const res = await fetch(
+		`${API_BASE}/mc/player/${name}?simple=true`,
+		requestOptions
+	);
 	const json: { user?: PlayerResponse; notFound?: boolean } = await res.json();
 	if (json.notFound || !json.user) return null;
 	return new Player(json.user);
