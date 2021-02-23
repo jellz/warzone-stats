@@ -2,7 +2,7 @@ import { Command, CommandRun, Context } from 'dabf';
 
 let lastUsed: Date;
 const staffRoles = process.env.STAFF_ROLES?.split(',') || [];
-const exemptUsers = process.env.STAFF_PING_EXEMPT_USERS?.split(', ') || [];
+const exemptUsers = process.env.STAFF_PING_EXEMPT_USERS?.split(',') || [];
 
 export class StaffCommand extends Command {
 	id = 'staff';
