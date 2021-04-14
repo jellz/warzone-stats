@@ -40,7 +40,11 @@ export class PlayerCommand extends Command {
 				{ name: 'W/L', value: player.wlr, inline: true },
 				{ name: 'Level', value: player.level, inline: true },
 				{ name: 'Matches', value: player.matches, inline: true },
-				{ name: 'Destroyed wool', value: player.woolDestroys, inline: true },
+				{
+					name: 'Objectives completed',
+					value: player.woolDestroys,
+					inline: true,
+				},
 				{ name: '\u200B', value: '\u200B' },
 				{
 					name: 'First joined',
