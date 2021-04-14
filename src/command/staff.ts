@@ -35,7 +35,9 @@ export class StaffCommand extends Command {
 			.filter(member => !exemptUsers.includes(member.id));
 
 		if (staff.size === 0)
-			return $.message.channel.send('There are no staff online');
+			return $.message.channel.send(
+				'There are no moderation staff available at the moment'
+			);
 
 		$.message.channel.send(
 			`Pinging online staff: ${staff
