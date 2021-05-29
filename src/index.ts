@@ -12,9 +12,13 @@ import { StaffCommand } from './command/staff';
 import { EvalCommand } from './command/eval';
 import { ReadyListener } from './listener/ready';
 import { HelpCommand } from './command/help';
+import { PrismaClient } from '.prisma/client';
+import { PingMeCommand } from './command/pingMe';
 
 if (!process.env.DISCORD_TOKEN) throw 'Missing DISCORD_TOKEN env variable';
 if (!process.env.LOADING_EMOJI) throw 'Missing LOADING_EMOJI env variable';
+
+export const prisma = new PrismaClient();
 
 const client = new DABFClient({}, { disableMentions: 'everyone' });
 
@@ -42,6 +46,7 @@ client.commandManager.register(new PlayerCommand());
 client.commandManager.register(new PingCommand());
 client.commandManager.register(new ServerCommand());
 client.commandManager.register(new StaffCommand());
+client.commandManager.register(new PingMeCommand());
 client.commandManager.register(new EvalCommand());
 client.commandManager.register(new HelpCommand());
 
