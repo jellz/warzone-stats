@@ -4,6 +4,7 @@ services:
   bot:
     tty: true
     build: './'
+    restart: unless-stopped
     environment:
       - DATABASE_URL=postgresql://user:password@postgres:5432/wzstats?schema=public
   postgres:
