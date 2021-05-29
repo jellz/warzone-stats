@@ -31,7 +31,7 @@ export class PingMeCommand extends Command {
 			await prisma.userPreferences.findUnique({
 				where: { id: $.message.author.id },
 			})
-		)?.staffPingStatusesOverride || ['Online'];
+		)?.staffPingStatusesOverride || ['online'];
 
 		const embed = new MessageEmbed()
 			.setTitle('Ping preferences')
