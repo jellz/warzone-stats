@@ -92,7 +92,7 @@ export class PingMeCommand extends Command {
 					);
 
 				pingMeStatuses = pingMeStatuses.filter(
-					pingStatus => pingStatus !== status
+					(pingStatus: string) => pingStatus !== status
 				);
 				break;
 		}
