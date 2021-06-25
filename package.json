@@ -3,6 +3,7 @@
 	"version": "1.0.0",
 	"description": "View Warzone info in Discord",
 	"main": "src/index.ts",
+	"bin": "dist/index.js",
 	"repository": "git@github.com:jellz/warzone-stats",
 	"author": "Daniel <danielgulic@gmail.com>",
 	"license": "MIT",
