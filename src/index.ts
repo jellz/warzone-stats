@@ -1,5 +1,8 @@
+import 'reflect-metadata';
 import { config as configEnv } from 'dotenv';
 configEnv();
+
+import { Connection, createConnection } from 'typeorm';
 
 import { Context, DABFClient } from 'dabf';
 import { getPlayer, Player } from './api';
@@ -10,15 +13,25 @@ import { PingCommand } from './command/ping';
 import { ServerCommand } from './command/server';
 import { StaffCommand } from './command/staff';
 import { EvalCommand } from './command/eval';
-import { ReadyListener } from './listener/ready';
 import { HelpCommand } from './command/help';
-import { PrismaClient } from '.prisma/client';
 import { PingMeCommand } from './command/pingMe';
+import { ReadyListener } from './listener/ready';
+import { UserPreferences } from './entity/userPreferences';
 
 if (!process.env.DISCORD_TOKEN) throw 'Missing DISCORD_TOKEN env variable';
 if (!process.env.LOADING_EMOJI) throw 'Missing LOADING_EMOJI env variable';
+if (!process.env.DATABASE_URL) throw 'Missing DATABASE_URL env variable';
 
-export const prisma = new PrismaClient();
+export let connection: Connection;
+(async () => {
+	connection = await createConnection({
+		type: 'postgres',
+		url: process.env.DATABASE_URL,
+		synchronize: true,
+		logging: true,
+		entities: [UserPreferences],
+	});
+})();
 
 const client = new DABFClient({}, { disableMentions: 'everyone' });
 
