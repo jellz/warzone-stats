@@ -1,6 +1,7 @@
 import { Command, CommandRun, Context } from 'dabf';
 import { MessageEmbed } from 'discord.js';
-import { prisma } from '..';
+import { connection } from '..';
+import { UserPreferences } from '../entity/userPreferences';
 
 const allStatuses = ['Online', 'DND', 'Idle', 'Invisible'];
 const staffRoles = process.env.STAFF_ROLES?.split(',') || [];
@@ -27,11 +28,9 @@ export class PingMeCommand extends Command {
 				':question: Try **`show`**, **`add <status>`**, or **`remove <status>`**'
 			);
 
-		let pingMeStatuses = (
-			await prisma.userPreferences.findUnique({
-				where: { id: $.message.author.id },
-			})
-		)?.staffPingStatusesOverride || ['online'];
+		const userPreferences = connection.getRepository(UserPreferences);
+		let pingMeStatuses = (await userPreferences.findOne($.message.author.id))
+			?.staffPingStatusesOverride || ['online'];
 
 		const embed = new MessageEmbed()
 			.setTitle('Ping preferences')
@@ -97,20 +96,17 @@ export class PingMeCommand extends Command {
 				break;
 		}
 
-		await prisma.userPreferences.upsert({
-			where: { id: $.message.author.id },
-			create: {
+		const prefs = await userPreferences.findOne($.message.author.id);
+		if (prefs)
+			await userPreferences.update(prefs.id, {
+				id: prefs.id,
+				staffPingStatusesOverride: pingMeStatuses,
+			});
+		else
+			await userPreferences.insert({
 				id: $.message.author.id,
-				staffPingStatusesOverride: {
-					set: pingMeStatuses,
-				},
-			},
-			update: {
-				staffPingStatusesOverride: {
-					set: pingMeStatuses,
-				},
-			},
-		});
+				staffPingStatusesOverride: pingMeStatuses,
+			});
 
 		await $.message.react('✅');
 	}
