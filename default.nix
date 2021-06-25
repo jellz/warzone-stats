@@ -6,6 +6,6 @@ mkYarnPackage {
   packageJSON = ./package.json;
   yarnLock = ./yarn.lock;
   yarnNix = ./yarn.nix;
-  patchPhase = "npx prisma generate";
+  patchPhase = "node_modules/.bin/prisma generate";
   buildPhase = "yarn build:nix";
 }
