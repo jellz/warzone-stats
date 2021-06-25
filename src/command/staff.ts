@@ -1,17 +1,18 @@
 import { Command, CommandRun, Context } from 'dabf';
 import { GuildMember, User } from 'discord.js';
-import { prisma } from '..';
+import { connection } from '..';
+import { UserPreferences } from '../entity/userPreferences';
 
 let lastUsed: Date;
 const staffRoles = process.env.STAFF_ROLES?.split(',') || [];
 const exemptUsers = process.env.STAFF_PING_EXEMPT_USERS?.split(',') || [];
 
 const isPingable = async (user: User) => {
-	const pingList = (
-		await prisma.userPreferences.findUnique({ where: { id: user.id } })
-	)?.staffPingStatusesOverride || ['online'];
+	const userPreferences = connection.getRepository(UserPreferences);
 
-	console.log(pingList, user.presence.status);
+	const pingList = (await userPreferences.findOne(user.id))
+		?.staffPingStatusesOverride || ['online'];
+
 	return pingList.includes(user.presence.status);
 };
 
