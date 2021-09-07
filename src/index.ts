@@ -20,13 +20,12 @@ import { UserPreferences } from './entity/userPreferences';
 
 if (!process.env.DISCORD_TOKEN) throw 'Missing DISCORD_TOKEN env variable';
 if (!process.env.LOADING_EMOJI) throw 'Missing LOADING_EMOJI env variable';
-if (!process.env.DATABASE_URL) throw 'Missing DATABASE_URL env variable';
 
 export let connection: Connection;
 (async () => {
 	connection = await createConnection({
-		type: 'postgres',
-		url: process.env.DATABASE_URL,
+		type: 'sqlite',
+		database: '../database/warzone_stats.db',
 		synchronize: true,
 		logging: true,
 		entities: [UserPreferences],
