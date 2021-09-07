@@ -6,7 +6,7 @@ services:
     build: './'
     restart: unless-stopped
     volumes:
-      - wzstats_sql_data:/usr/src/app/database
+      - wzstats_sql_data:/usr/src/database
     environment:
       - DISCORD_TOKEN
       - LOADING_EMOJI
