@@ -6,7 +6,7 @@ COPY yarn.lock ./
 COPY package.json ./
 
 RUN apk add --no-cache --virtual .build-deps alpine-sdk python
-RUN yarn install --production --silent
+RUN yarn install --silent
 RUN apk del .build-deps
 
 COPY . .
