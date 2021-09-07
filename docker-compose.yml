@@ -5,15 +5,11 @@ services:
     tty: true
     build: './'
     restart: unless-stopped
-    environment:
-      - DATABASE_URL=postgresql://user:password@postgres:5432/wzstats?schema=public
-  postgres:
-    image: 'postgres:alpine'
     volumes:
-      - wzstats_postgres_data:/var/lib/postgresql/data
+      - wzstats_sql_data:/usr/src/app/database
     environment:
-      - POSTGRES_USER=user
-      - POSTGRES_PASSWORD=password
+      - DISCORD_TOKEN
+      - LOADING_EMOJI
 
 volumes:
-  wzstats_postgres_data:
+  wzstats_sql_data:

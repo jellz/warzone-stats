@@ -19,9 +19,9 @@
 		"dotenv": "^8.2.0",
 		"humanize-duration": "^3.25.1",
 		"node-fetch": "^2.6.1",
-		"pg": "^8.6.0",
 		"reflect-metadata": "^0.1.13",
 		"s-ago": "^2.2.0",
+		"sqlite3": "^5.0.2",
 		"typeorm": "^0.2.34"
 	},
 	"devDependencies": {
