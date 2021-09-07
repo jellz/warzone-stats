@@ -10,6 +10,10 @@ services:
     environment:
       - DISCORD_TOKEN
       - LOADING_EMOJI
+      - STAFF_ROLES
+      - STAFF_PING_EXEMPT_USERS
+      - API_BASE
+      - EVALERS
 
 volumes:
   wzstats_sql_data:
