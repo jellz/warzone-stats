@@ -29,8 +29,12 @@ export class PingMeCommand extends Command {
 			);
 
 		const userPreferences = connection.getRepository(UserPreferences);
-		let pingMeStatuses = (await userPreferences.findOne($.message.author.id))
-			?.staffPingStatusesOverride || ['online'];
+		const prefs = await userPreferences.findOne($.message.author.id);
+
+		let pingMeStatuses: string[];
+		if (prefs) pingMeStatuses = prefs.staffPingStatusesOverride.split(',');
+		else if (!prefs) pingMeStatuses = ['online'];
+		else pingMeStatuses = [];
 
 		const embed = new MessageEmbed()
 			.setTitle('Ping preferences')
@@ -96,16 +100,15 @@ export class PingMeCommand extends Command {
 				break;
 		}
 
-		const prefs = await userPreferences.findOne($.message.author.id);
 		if (prefs)
 			await userPreferences.update(prefs.id, {
 				id: prefs.id,
-				staffPingStatusesOverride: pingMeStatuses,
+				staffPingStatusesOverride: pingMeStatuses.join(','),
 			});
 		else
 			await userPreferences.insert({
 				id: $.message.author.id,
-				staffPingStatusesOverride: pingMeStatuses,
+				staffPingStatusesOverride: pingMeStatuses.join(','),
 			});
 
 		await $.message.react('✅');

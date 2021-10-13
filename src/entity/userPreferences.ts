@@ -5,6 +5,6 @@ export class UserPreferences {
 	@PrimaryColumn()
 	id!: string;
 
-	@Column('text', { array: true })
-	staffPingStatusesOverride!: string[];
+	@Column('text')
+	staffPingStatusesOverride!: string;
 }
