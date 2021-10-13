@@ -9,9 +9,7 @@
 	"license": "MIT",
 	"private": true,
 	"scripts": {
-		"dev": "ts-node .",
-		"build": "tsc",
-		"start": "node dist/"
+		"dev": "ts-node ."
 	},
 	"dependencies": {
 		"dabf": "^0.0.4",
