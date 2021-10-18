@@ -1,6 +1,6 @@
 ## Warzone Stats
 
-Warzone Stats is a Discord bot for displaying information about [Warzone](https://warzone.network) or other TGM servers if self-hosted.
+Warzone Stats is a Discord bot for displaying information about [Warzone](https://warzone.network) or other [TGM](https://github.com/Warzone/TGM) servers if self-hosted.
 
 If you find a bug or have any feature requests feel free to [make an issue here](https://github.com/jellz/warzone-stats/issues)
 
