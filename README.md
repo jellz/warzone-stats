@@ -1,10 +1,13 @@
+# ⚠️ **DEPRECATED**
+Warzone Stats was created for use with [TGM](https://github.com/Warzone/TGM) servers. [Warzone](https://github.com/Warzone) has since discontinued TGM in favour of [Mars](https://github.com/Warzone/Mars), so this bot is no longer used on Warzone and there is no longer a hosted instance.
+
+This bot is still suitable for use with TGM servers. Pull requests will continue to be accepted.
+
 ## Warzone Stats
 
 Warzone Stats is a Discord bot for displaying information about [Warzone](https://warzone.network) or other [TGM](https://github.com/Warzone/TGM) servers if self-hosted.
 
 If you find a bug or have any feature requests feel free to [make an issue here](https://github.com/jellz/warzone-stats/issues)
-
-You can invite the hosted bot to your own server [here](https://discord.com/oauth2/authorize?client_id=520815160768724997&scope=bot&permissions=8192)
 
 ### Self-hosting
 
